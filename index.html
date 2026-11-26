@@ -9,12 +9,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="ক্যালরি হিসাব">
   <title>খাবার ও ক্যালরি হিসাব — Daily Calorie Tracker</title>
-  <link rel="manifest" href="./manifest.json">
-  <link id="app-favicon" rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
-  <link id="app-apple-icon" rel="apple-touch-icon" href="./icon-192.png">
+  <link id="app-favicon" rel="icon" type="image/svg+xml" href="">
+  <link id="app-apple-icon" rel="apple-touch-icon" href="">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -26,7 +25,7 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'Hind Siliguri', 'system-ui', '-apple-system', 'sans-serif']
+            sans: ['Poppins', 'Inter', 'Hind Siliguri', 'system-ui', '-apple-system', 'sans-serif']
           }
         }
       }
@@ -35,7 +34,8 @@
   <style>
     * { -webkit-tap-highlight-color: transparent; }
     body {
-      font-family: 'Inter', 'Hind Siliguri', system-ui, -apple-system, sans-serif;
+      font-family: 'Poppins', 'Inter', 'Hind Siliguri', system-ui, -apple-system, sans-serif;
+      font-variant-numeric: tabular-nums;
       overscroll-behavior-y: contain;
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -56,12 +56,38 @@
       50% { opacity: 0.72; transform: scale(1.06); }
     }
     .animate-in { animation: fadeSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+    @keyframes pageEnterSlide {
+      from { opacity: 0; transform: translateY(14px) scale(0.992); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .page-enter-slide { animation: pageEnterSlide 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
+    .meal-swipe-row { transition: transform 0.18s ease, background-color 0.18s ease; touch-action: pan-y; }
+    @media print {
+      header, nav, #btn-ai-coach-fab, #pwa-install-banner, #btn-export-pdf-report, #btn-gen-ai-insight { display: none !important; }
+      body { background: #ffffff !important; color: #0f172a !important; }
+      main { padding-bottom: 0 !important; max-width: 100% !important; }
+      .pro-card, section > div { break-inside: avoid; box-shadow: none !important; border: 1px solid #cbd5e1 !important; }
+    }
     .orb-glow { animation: pulseGlow 7s ease-in-out infinite; }
     .pro-card {
-      box-shadow: 0 8px 28px -8px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
+      box-shadow: 0 6px 22px -6px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
     }
     .dark .pro-card {
-      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      background-color: #161822;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    @keyframes badgeShine {
+      0% { transform: translateX(-120%) skewX(-20deg); }
+      100% { transform: translateX(220%) skewX(-20deg); }
+    }
+    .badge-shine::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      width: 45%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+      animation: badgeShine 3.2s ease-in-out infinite;
+      pointer-events: none;
     }
     /* ========== CRYSTAL WHITE GLASS THEME ========== */
     body.theme-glass {
@@ -78,8 +104,8 @@
     body.theme-glass header,
     body.theme-glass nav {
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.56) 0%, rgba(255, 255, 255, 0.26) 100%) !important;
-      backdrop-filter: blur(26px) saturate(200%) !important;
-      -webkit-backdrop-filter: blur(26px) saturate(200%) !important;
+      backdrop-filter: blur(30px) saturate(210%) !important;
+      -webkit-backdrop-filter: blur(30px) saturate(210%) !important;
       border-color: rgba(255, 255, 255, 0.80) !important;
       box-shadow: 0 10px 34px -8px rgba(14, 116, 144, 0.16), inset 0 1.5px 1px rgba(255, 255, 255, 0.92) !important;
     }
@@ -108,8 +134,8 @@
     body.theme-dark-glass header,
     body.theme-dark-glass nav {
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
-      backdrop-filter: blur(28px) saturate(195%) !important;
-      -webkit-backdrop-filter: blur(28px) saturate(195%) !important;
+      backdrop-filter: blur(30px) saturate(210%) !important;
+      -webkit-backdrop-filter: blur(30px) saturate(210%) !important;
       border-color: rgba(255, 255, 255, 0.22) !important;
       box-shadow: 0 12px 38px -8px rgba(0, 0, 0, 0.62), inset 0 1px 1px rgba(255, 255, 255, 0.28) !important;
     }
@@ -190,6 +216,133 @@
     body.theme-dark-glass #menu-drawer-panel {
       background: rgba(15, 23, 42, 0.88) !important;
     }
+    /* ========== NEUMORPHISM (SOFT 3D) THEME ========== */
+    body.theme-neumorph {
+      background: #e6ecf2 !important;
+      color: #1e293b !important;
+    }
+    body.theme-neumorph .bg-white,
+    body.theme-neumorph .hero-glow,
+    body.theme-neumorph header,
+    body.theme-neumorph nav {
+      background: #e6ecf2 !important;
+      border-color: rgba(255, 255, 255, 0.55) !important;
+      box-shadow: 8px 8px 18px #c5ced8, -8px -8px 18px #ffffff !important;
+    }
+    body.theme-neumorph input,
+    body.theme-neumorph select,
+    body.theme-neumorph .bg-slate-50 {
+      background: #e6ecf2 !important;
+      border-color: transparent !important;
+      box-shadow: inset 4px 4px 8px #c8d1db, inset -4px -4px 8px #ffffff !important;
+    }
+    /* ========== CLAYMORPHISM (SOFT 3D PLAY-DOUGH) THEME ========== */
+    body.theme-clay {
+      background: linear-gradient(145deg, #e0f2fe 0%, #dcfce7 50%, #fce7f3 100%) !important;
+      background-attachment: fixed !important;
+      color: #1e293b !important;
+    }
+    body.theme-clay .bg-white,
+    body.theme-clay .hero-glow,
+    body.theme-clay header,
+    body.theme-clay nav {
+      background: rgba(255, 255, 255, 0.92) !important;
+      border: 2px solid rgba(255, 255, 255, 0.96) !important;
+      border-radius: 26px !important;
+      box-shadow:
+        8px 8px 16px #d1d9e6,
+        -8px -8px 16px #ffffff,
+        inset -4px -6px 12px rgba(148, 163, 184, 0.18),
+        inset 5px 5px 12px rgba(255, 255, 255, 0.98) !important;
+    }
+    /* ========== CYBERPUNK / NEON GAMING THEME ========== */
+    body.theme-cyberpunk {
+      background:
+        radial-gradient(circle at 15% 12%, rgba(255, 0, 255, 0.16) 0%, transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(0, 255, 255, 0.16) 0%, transparent 42%),
+        radial-gradient(circle at 50% 90%, rgba(168, 85, 247, 0.14) 0%, transparent 45%),
+        #09090b !important;
+      background-attachment: fixed !important;
+      color: #f4f4f5 !important;
+    }
+    body.theme-cyberpunk .dark\:bg-slate-900,
+    body.theme-cyberpunk .bg-white,
+    body.theme-cyberpunk .hero-glow,
+    body.theme-cyberpunk header,
+    body.theme-cyberpunk nav {
+      background: rgba(12, 12, 18, 0.86) !important;
+      backdrop-filter: blur(24px) !important;
+      -webkit-backdrop-filter: blur(24px) !important;
+      border: 1px solid rgba(34, 211, 238, 0.45) !important;
+      box-shadow: 0 0 12px rgba(255, 0, 255, 0.22), 0 0 22px rgba(0, 255, 255, 0.16) !important;
+    }
+    body.theme-cyberpunk button:active,
+    body.theme-cyberpunk .bg-emerald-600 {
+      box-shadow: 0 0 12px rgba(244, 114, 182, 0.65), 0 0 22px rgba(34, 211, 238, 0.45) !important;
+    }
+    body.theme-cyberpunk .text-emerald-600,
+    body.theme-cyberpunk .dark\:text-emerald-400,
+    body.theme-cyberpunk .dark\:text-emerald-300 {
+      color: #22d3ee !important;
+      text-shadow: 0 0 10px rgba(34, 211, 238, 0.45);
+    }
+    body.theme-cyberpunk #menu-drawer-panel {
+      background: rgba(9, 9, 14, 0.95) !important;
+      border-left: 1px solid rgba(255, 0, 255, 0.45) !important;
+    }
+    /* ========== NATURE / ORGANIC CALM THEME ========== */
+    body.theme-nature {
+      background:
+        radial-gradient(circle at 12% 14%, rgba(74, 222, 128, 0.25) 0%, transparent 42%),
+        radial-gradient(circle at 88% 18%, rgba(125, 211, 252, 0.30) 0%, transparent 44%),
+        radial-gradient(circle at 50% 85%, rgba(253, 230, 138, 0.32) 0%, transparent 48%),
+        linear-gradient(135deg, #e0f2fe 0%, #dcfce7 52%, #fef9c3 100%) !important;
+      background-attachment: fixed !important;
+      color: #14532d !important;
+    }
+    body.theme-nature .bg-white,
+    body.theme-nature .hero-glow,
+    body.theme-nature header,
+    body.theme-nature nav {
+      background: rgba(255, 254, 249, 0.84) !important;
+      backdrop-filter: blur(22px) !important;
+      -webkit-backdrop-filter: blur(22px) !important;
+      border-color: rgba(134, 239, 172, 0.55) !important;
+      box-shadow: 0 10px 28px -8px rgba(20, 83, 45, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    }
+    body.theme-nature .text-slate-900,
+    body.theme-nature .text-slate-800 {
+      color: #14532d !important;
+    }
+    body.theme-nature .text-slate-500,
+    body.theme-nature .text-slate-600 {
+      color: #166534 !important;
+    }
+    @keyframes bubbleRise {
+      0% { transform: translateY(8px) scale(0.6); opacity: 0; }
+      50% { opacity: 0.85; }
+      100% { transform: translateY(-22px) scale(1.1); opacity: 0; }
+    }
+    .water-bubble { animation: bubbleRise 2.2s ease-in infinite; }
+    .water-bubble-2 { animation: bubbleRise 2.8s ease-in 0.9s infinite; }
+    /* ========== WATER WAVE ANIMATION ========== */
+    @keyframes waterWaveMove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes waterSplashPop {
+      0% { transform: scale(0.85); opacity: 0.95; }
+      60% { transform: scale(1.12); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .water-wave-svg { animation: waterWaveMove 2.6s linear infinite; }
+    .water-pop { animation: waterSplashPop 0.42s ease-out; }
+    @keyframes micPulseRing {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
+      70% { transform: scale(1.04); box-shadow: 0 0 0 18px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .mic-listening { animation: micPulseRing 1.3s ease-out infinite; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-200">
@@ -266,7 +419,7 @@
       <!-- Left: Custom Profile Picture Button -->
       <div class="flex items-center justify-start">
         <button id="btn-header-profile" type="button" aria-label="Change Profile Picture" class="relative w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm overflow-hidden border-2 border-emerald-300 dark:border-emerald-600 hover:scale-105 active:scale-95 transition">
-          <img id="header-avatar-img" src="" alt="Profile" class="hidden w-full h-full object-cover">
+          <img id="header-avatar-img" loading="lazy" src="" alt="Profile" class="hidden w-full h-full object-cover">
           <svg id="header-avatar-svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
@@ -308,7 +461,7 @@
         <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700/70 space-y-2.5">
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 overflow-hidden flex items-center justify-center shrink-0 border-2 border-emerald-300 dark:border-emerald-600">
-              <img id="menu-avatar-img" src="" alt="Profile" class="hidden w-full h-full object-cover">
+              <img id="menu-avatar-img" loading="lazy" src="" alt="Profile" class="hidden w-full h-full object-cover">
               <svg id="menu-avatar-svg" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </div>
             <div class="min-w-0 flex-1">
@@ -343,6 +496,10 @@
             <button type="button" data-set-theme="dark" class="theme-pill py-2 px-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 transition">🌙 Dark</button>
             <button type="button" data-set-theme="glass" class="theme-pill py-2 px-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 transition">✨ Glass</button>
             <button type="button" data-set-theme="dark-glass" class="theme-pill py-2 px-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 transition">🌌 Dark Glass</button>
+            <button type="button" data-set-theme="neumorph" class="theme-pill py-2 px-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 transition">🧊 Soft 3D</button>
+            <button type="button" data-set-theme="clay" class="theme-pill py-2 px-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 transition">🧸 Clay 3D</button>
+            <button type="button" data-set-theme="cyberpunk" class="theme-pill py-2 px-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 transition">⚡ Cyberpunk</button>
+            <button type="button" data-set-theme="nature" class="theme-pill py-2 px-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700 transition">🌿 Nature</button>
           </div>
         </div>
 
@@ -364,6 +521,12 @@
 
   <!-- Main Content Container -->
   <main class="max-w-lg mx-auto px-4 pt-4 pb-28 space-y-4">
+    <!-- Cloud Sync Skeleton Shimmer (shown briefly while initial cloud sync loads) -->
+    <div id="cloud-skeleton" class="hidden space-y-3 animate-pulse">
+      <div class="h-12 rounded-2xl bg-slate-200/80 dark:bg-slate-800/80"></div>
+      <div class="h-44 rounded-3xl bg-slate-200/80 dark:bg-slate-800/80"></div>
+      <div class="h-24 rounded-2xl bg-slate-200/80 dark:bg-slate-800/80"></div>
+    </div>
 
     <!-- ==================== TAB 1: TODAY ==================== -->
     <section id="view-today" class="space-y-4 animate-in">
@@ -375,6 +538,7 @@
         <div class="flex items-center gap-2 flex-wrap justify-center">
           <span id="current-date-label" class="text-sm font-extrabold tracking-tight text-slate-800 dark:text-slate-100"></span>
           <span id="streak-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300">🔥 0</span>
+          <span id="level-pill-today" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-indigo-100 text-indigo-700 dark:bg-indigo-900/60 dark:text-indigo-300">⭐ Lv.1</span>
           <button id="btn-jump-today" type="button" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"></button>
         </div>
         <button id="btn-next-date" type="button" class="w-9 h-9 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-90 transition" aria-label="Next day">
@@ -392,7 +556,10 @@
             <span id="stat-goal" class="text-slate-900 dark:text-white font-extrabold">2000</span>
             <span>kcal</span>
           </span>
-          <button id="btn-copy-summary" type="button" class="px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-[11px] font-bold text-emerald-700 dark:text-emerald-300 transition">📋 রিপোর্ট কপি</button>
+          <div class="flex items-center gap-1.5">
+            <button id="btn-open-share-card" type="button" class="px-2.5 py-1 rounded-full bg-emerald-600 hover:bg-emerald-700 text-[11px] font-bold text-white shadow-sm active:scale-95 transition">🖼️ শেয়ার</button>
+            <button id="btn-copy-summary" type="button" class="px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-[11px] font-bold text-emerald-700 dark:text-emerald-300 transition">📋 কপি</button>
+          </div>
         </div>
 
         <!-- Symmetric 3-Column Ring Row: [Eaten] — [Center Ring: Remaining] — [Burned] -->
@@ -482,10 +649,16 @@
             <p id="lbl-cam-cta-sub" class="text-[10px] text-emerald-100/90 truncate">ক্যামেরা বা গ্যালারি থেকে অটো ক্যালরি ও ম্যাক্রো</p>
           </div>
         </div>
-        <button id="btn-camera-today" type="button" class="shrink-0 px-3.5 py-2 rounded-xl bg-white text-emerald-700 font-extrabold text-xs shadow-sm hover:bg-emerald-50 active:scale-95 transition flex items-center gap-1.5">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          <span id="lbl-cam-btn-today">ক্যামেরা</span>
-        </button>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button id="btn-voice-today" type="button" aria-label="Voice Input" class="px-2.5 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-xs backdrop-blur-sm border border-white/25 active:scale-95 transition flex items-center gap-1">
+            <span>🎤</span>
+            <span id="lbl-voice-btn">ভয়েস</span>
+          </button>
+          <button id="btn-camera-today" type="button" class="px-3 py-2 rounded-xl bg-white text-emerald-700 font-extrabold text-xs shadow-sm hover:bg-emerald-50 active:scale-95 transition flex items-center gap-1.5">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span id="lbl-cam-btn-today">ক্যামেরা</span>
+          </button>
+        </div>
       </div>
       <input id="camera-file-input" type="file" accept="image/*" capture="environment" class="hidden">
       <input id="gallery-file-input" type="file" accept="image/*" class="hidden">
@@ -526,8 +699,13 @@
         <div class="pro-card bg-white dark:bg-slate-900 rounded-3xl p-4 border border-slate-200/80 dark:border-slate-800">
           <div class="flex items-center justify-between gap-3">
             <div class="flex items-center gap-3 min-w-0">
-              <div class="w-10 h-10 rounded-2xl bg-sky-100 dark:bg-sky-950/70 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+              <div id="water-bottle-box" class="relative w-12 h-14 rounded-2xl bg-sky-50 dark:bg-sky-950/60 border-2 border-sky-300/90 dark:border-sky-700 overflow-hidden shrink-0 flex items-end justify-center shadow-inner">
+                <div id="water-bottle-fill" class="w-full bg-gradient-to-t from-sky-600 via-sky-500 to-cyan-400 transition-all duration-500 relative" style="height: 0%;">
+                  <svg class="water-wave-svg absolute -top-2 left-0 w-[200%] h-2.5 text-cyan-400" viewBox="0 0 120 12" preserveAspectRatio="none"><path fill="currentColor" d="M0 6 Q 15 0 30 6 T 60 6 T 90 6 T 120 6 L 120 12 L 0 12 Z"/></svg>
+                  <span class="water-bubble absolute bottom-1 left-2 w-1.5 h-1.5 rounded-full bg-white/70"></span>
+                  <span class="water-bubble-2 absolute bottom-1 right-2 w-1 h-1 rounded-full bg-white/60"></span>
+                </div>
+                <span id="water-bottle-pct" class="absolute inset-0 flex items-center justify-center text-[10px] font-extrabold text-sky-950 dark:text-white drop-shadow">0%</span>
               </div>
               <div class="min-w-0">
                 <p id="lbl-water-title" class="text-sm font-bold text-slate-900 dark:text-white">পানি পান</p>
@@ -536,7 +714,7 @@
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
               <button id="btn-water-minus" type="button" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-lg flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 active:scale-90 transition">−</button>
-              <button id="btn-water-plus" type="button" class="w-9 h-9 rounded-xl bg-sky-500 text-white font-bold text-lg flex items-center justify-center shadow-sm hover:bg-sky-600 active:scale-90 transition">+</button>
+              <button id="btn-water-plus" type="button" class="px-3 h-9 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-md shadow-sky-500/25 hover:from-sky-600 hover:to-cyan-600 active:scale-90 transition"><span>+১</span><span>💧</span></button>
             </div>
           </div>
           <div id="water-cups-row" class="grid grid-cols-8 gap-1.5 mt-3"></div>
@@ -560,6 +738,70 @@
               <button id="btn-burn-plus" type="button" class="px-2.5 h-8 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs flex items-center justify-center shadow-sm active:scale-90 transition">+100</button>
               <button id="btn-burn-walk" type="button" class="px-2.5 h-8 rounded-xl bg-orange-50 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 font-bold text-[11px] border border-orange-200 dark:border-orange-800 hover:bg-orange-100 active:scale-90 transition">+150</button>
             </div>
+          </div>
+        
+          <!-- Step Counter Pedometer Strip -->
+          <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="text-base">👟</span>
+              <div>
+                <p class="text-xs font-bold text-slate-800 dark:text-slate-100"><span id="step-count-val">0</span> <span class="text-[11px] font-medium text-slate-500">কদম (Steps)</span></p>
+                <p id="step-burn-sub" class="text-[10px] text-orange-600 dark:text-orange-400 font-semibold">≈ 0 kcal বার্ন</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button id="btn-step-sensor" type="button" class="px-2.5 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800 text-[11px] font-bold active:scale-95 transition">▶ সেন্সর</button>
+              <button id="btn-step-add500" type="button" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-[11px] font-bold active:scale-95 transition">+500</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Intermittent Fasting Circular Timer Widget -->
+        <div class="pro-card bg-white dark:bg-slate-900 rounded-3xl p-4 border border-slate-200/80 dark:border-slate-800 space-y-3">
+          <div class="flex items-center justify-between gap-2">
+            <div>
+              <h3 id="lbl-fasting-title" class="text-sm font-bold text-slate-900 dark:text-white">⏳ ইন্টারমিটেন্ট ফাস্টিং (Fasting)</h3>
+              <p id="fasting-sub-text" class="text-[11px] text-slate-500 dark:text-slate-400">১৬:৮ বা রোজার সময় সহজেই ট্র্যাক করুন</p>
+            </div>
+            <div class="flex items-center gap-1" id="fasting-plan-pills">
+              <button type="button" data-fast-hrs="14" class="fast-plan-btn px-2 py-1 rounded-lg text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">14:10</button>
+              <button type="button" data-fast-hrs="16" class="fast-plan-btn px-2 py-1 rounded-lg text-[10px] font-bold bg-emerald-600 text-white">16:8</button>
+              <button type="button" data-fast-hrs="18" class="fast-plan-btn px-2 py-1 rounded-lg text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">18:6</button>
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <div class="relative w-24 h-24 shrink-0 flex items-center justify-center">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="42" fill="none" stroke-width="8" class="stroke-slate-200 dark:stroke-slate-800"/>
+                <circle id="fasting-ring-arc" cx="50" cy="50" r="42" fill="none" stroke-width="8" stroke-linecap="round" stroke="#10b981" stroke-dasharray="263.89" stroke-dashoffset="263.89" style="transition: stroke-dashoffset 0.5s ease;"/>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                <span id="fasting-timer-text" class="text-xs font-extrabold text-slate-900 dark:text-white tracking-tight">00:00:00</span>
+                <span id="fasting-pct-text" class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">0%</span>
+              </div>
+            </div>
+            <div class="flex-1 min-w-0 space-y-2">
+              <p id="fasting-status-msg" class="text-xs font-semibold text-slate-700 dark:text-slate-200 leading-snug">ফাস্টিং শুরু করতে নিচের বাটনে ট্যাপ করুন।</p>
+              <p id="fasting-target-time" class="text-[11px] text-slate-400"></p>
+              <button id="btn-fasting-toggle" type="button" class="w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-sm active:scale-95 transition">▶ ফাস্টিং শুরু করুন</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Journal & Mood Memory Card -->
+        <div class="pro-card bg-white dark:bg-slate-900 rounded-3xl p-4 border border-slate-200/80 dark:border-slate-800 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white">📔 আজকের জার্নাল ও মুড</h3>
+            <div id="journal-mood-pills" class="flex items-center gap-1">
+              <button type="button" data-mood="great" class="mood-btn w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-base flex items-center justify-center transition">😄</button>
+              <button type="button" data-mood="good" class="mood-btn w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-base flex items-center justify-center transition">🙂</button>
+              <button type="button" data-mood="ok" class="mood-btn w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-base flex items-center justify-center transition">😐</button>
+              <button type="button" data-mood="tired" class="mood-btn w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-base flex items-center justify-center transition">😴</button>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <input id="input-daily-journal" type="text" class="flex-1 min-w-0 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="আজকের খাবার, এনার্জি বা অনুভূতি লিখে রাখুন...">
+            <button id="btn-save-journal" type="button" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shrink-0 active:scale-95 transition">সেভ</button>
           </div>
         </div>
       </div>
@@ -654,6 +896,21 @@
 
     <!-- ==================== TAB 3: REPORTS ==================== -->
     <section id="view-reports" class="hidden space-y-4 animate-in">
+      <!-- Top Action Bar: AI Smart Insights & PDF Report Export -->
+      <div class="pro-card bg-gradient-to-br from-emerald-600 via-teal-600 to-indigo-700 text-white rounded-3xl p-4 space-y-3 shadow-lg">
+        <div class="flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <h2 class="text-sm font-extrabold flex items-center gap-1.5"><span>✨</span><span>AI স্মার্ট ইনসাইট ও রিপোর্ট</span></h2>
+            <p class="text-[11px] text-emerald-100 mt-0.5">আপনার আজকের ডেটা বিশ্লেষণ ও ডাক্তার/ট্রেইনারের জন্য PDF রিপোর্ট</p>
+          </div>
+          <button id="btn-export-pdf-report" type="button" class="shrink-0 px-3 py-2 rounded-xl bg-white text-emerald-800 hover:bg-emerald-50 text-xs font-extrabold shadow-sm active:scale-95 transition">📄 PDF রিপোর্ট</button>
+        </div>
+        <div id="ai-insight-box" class="rounded-2xl bg-white/15 backdrop-blur-md border border-white/20 p-3 text-xs leading-relaxed text-white/95">
+          নিচের বাটনে ট্যাপ করলে AI আপনার আজকের ক্যালরি, প্রোটিন ও পানির হিসাব দেখে পার্সোনালাইজড পরামর্শ দেবে।
+        </div>
+        <button id="btn-gen-ai-insight" type="button" class="w-full py-2 px-3 rounded-xl bg-white/20 hover:bg-white/30 border border-white/25 text-white text-xs font-extrabold active:scale-95 transition">🤖 আজকের AI ইনসাইট তৈরি করুন</button>
+      </div>
+
       <!-- 7-Day Summary KPIs -->
       <div class="grid grid-cols-3 gap-2.5">
         <div class="bg-white dark:bg-slate-900 rounded-2xl p-3.5 border border-slate-200/80 dark:border-slate-800 shadow-sm text-center">
@@ -697,15 +954,38 @@
             <h2 id="lbl-weight-tracker" class="text-sm font-bold text-slate-900 dark:text-white">⚖️ ওজন ট্র্যাকার (Weight Log)</h2>
             <p id="weight-latest-text" class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5"></p>
           </div>
-          <form id="weight-log-form" class="flex items-center gap-1.5">
-            <input id="input-today-weight" type="number" min="25" max="250" step="0.1" class="w-20 px-2.5 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-center" placeholder="kg">
-            <button id="btn-save-weight" type="submit" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">সেভ</button>
-          </form>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btn-open-weight-modal" type="button" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm active:scale-95 transition">➕ ওজন ও বডি ডিটেইলস যোগ করুন</button>
         </div>
         <div id="weight-empty-msg" class="text-center text-xs text-slate-400 py-4 hidden"></div>
         <div id="weight-chart-wrap" class="relative h-44">
           <canvas id="weightChart"></canvas>
         </div>
+      </div>
+
+      <!-- Gamification: Badges & Level Progress Card -->
+      <div class="pro-card bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 space-y-3">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h2 id="lbl-badges-title" class="text-sm font-bold text-slate-900 dark:text-white">🏆 ব্যাজ ও লেভেল (Gamification)</h2>
+            <p id="level-rank-sub" class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">লেভেল ১ · নতুন শুরু</p>
+          </div>
+          <span id="level-xp-badge" class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-indigo-100 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300">0 XP</span>
+        </div>
+        <div class="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+          <div id="level-xp-bar" class="h-full rounded-full bg-gradient-to-r from-indigo-500 via-emerald-500 to-amber-400 bar-fill" style="width: 10%"></div>
+        </div>
+        <div id="badges-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+      </div>
+
+      <!-- Meal Photo Gallery Card -->
+      <div class="pro-card bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <h2 id="lbl-photo-gallery-title" class="text-sm font-bold text-slate-900 dark:text-white">📸 খাবারের ফটো গ্যালারি</h2>
+          <span id="photo-gallery-count" class="text-[11px] font-bold text-slate-400">০টি ছবি</span>
+        </div>
+        <div id="meal-photo-gallery" class="grid grid-cols-3 gap-2"></div>
       </div>
 
       <!-- Recent Days History -->
@@ -741,39 +1021,39 @@
           <h2 id="lbl-calc-title" class="text-sm font-bold text-slate-900 dark:text-white">স্মার্ট ক্যালরি লক্ষ্য ক্যালকুলেটর</h2>
           <p id="lbl-calc-sub" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">আপনার বয়স, ওজন ও উচ্চতা অনুযায়ী দৈনিক ক্যালরি হিসাব করুন</p>
         </div>
-        <form id="bmr-calc-form" class="space-y-2.5">
-          <div class="grid grid-cols-2 gap-2.5">
+        <form id="bmr-calc-form" class="space-y-3">
+          <div class="grid grid-cols-2 gap-3">
             <div>
-              <label id="lbl-gender" for="calc-gender" class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">লিঙ্গ</label>
-              <select id="calc-gender" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+              <label id="lbl-gender" for="calc-gender" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">লিঙ্গ</label>
+              <select id="calc-gender" class="w-full px-3 py-2.5 rounded-xl bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold truncate">
                 <option value="male">পুরুষ / Male</option>
                 <option value="female">নারী / Female</option>
               </select>
             </div>
             <div>
-              <label id="lbl-age" for="calc-age" class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">বয়স (বছর)</label>
-              <input id="calc-age" type="number" min="12" max="100" value="28" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+              <label id="lbl-age" for="calc-age" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">বয়স (বছর)</label>
+              <input id="calc-age" type="number" min="12" max="100" value="28" class="w-full px-3 py-2.5 rounded-xl bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold">
             </div>
             <div>
-              <label id="lbl-weight" for="calc-weight" class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">ওজন (কেজি)</label>
-              <input id="calc-weight" type="number" min="30" max="250" step="0.5" value="70" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+              <label id="lbl-weight" for="calc-weight" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">ওজন (কেজি)</label>
+              <input id="calc-weight" type="number" min="30" max="250" step="0.5" value="70" class="w-full px-3 py-2.5 rounded-xl bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold">
             </div>
             <div>
-              <label id="lbl-height" for="calc-height" class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">উচ্চতা (সেমি)</label>
-              <input id="calc-height" type="number" min="100" max="230" value="170" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+              <label id="lbl-height" for="calc-height" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">উচ্চতা (সেমি)</label>
+              <input id="calc-height" type="number" min="100" max="230" value="170" class="w-full px-3 py-2.5 rounded-xl bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold">
             </div>
-            <div>
-              <label id="lbl-activity" for="calc-activity" class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">কাজের ধরন</label>
-              <select id="calc-activity" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+            <div class="col-span-2">
+              <label id="lbl-activity" for="calc-activity" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">কাজের ধরন</label>
+              <select id="calc-activity" class="w-full px-3 py-2.5 rounded-xl bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold">
                 <option value="1.2">কম ব্যায়াম / Sedentary</option>
                 <option value="1.375" selected>হালকা সক্রিয় / Light</option>
                 <option value="1.55">মাঝারি সক্রিয় / Moderate</option>
                 <option value="1.725">বেশি সক্রিয় / Active</option>
               </select>
             </div>
-            <div>
-              <label id="lbl-goal-type" for="calc-goal-type" class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">লক্ষ্য</label>
-              <select id="calc-goal-type" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+            <div class="col-span-2">
+              <label id="lbl-goal-type" for="calc-goal-type" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">লক্ষ্য</label>
+              <select id="calc-goal-type" class="w-full px-3 py-2.5 rounded-xl bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 text-xs font-semibold">
                 <option value="lose">ওজন কমানো (-500)</option>
                 <option value="maintain" selected>ওজন ধরে রাখা</option>
                 <option value="gain">ওজন বাড়ানো (+300)</option>
@@ -822,6 +1102,24 @@
             লক্ষ্য সেভ করুন
           </button>
         </form>
+      </div>
+
+      <!-- Daily Meal Reminder Card (Web Notification) -->
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <h2 id="lbl-rem-title" class="text-sm font-bold text-slate-900 dark:text-white">🔔 দৈনিক খাবার রিমাইন্ডার</h2>
+            <p id="lbl-rem-desc" class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">খাবার লগ না করলে নির্দিষ্ট সময়ে নোটিফিকেশন মনে করিয়ে দেবে।</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer shrink-0">
+            <input id="chk-reminder-on" type="checkbox" class="sr-only peer">
+            <div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500 shadow-inner"></div>
+          </label>
+        </div>
+        <div class="flex items-center gap-2">
+          <input id="input-reminder-time" type="time" value="20:30" class="flex-1 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold">
+          <button id="btn-test-reminder" type="button" class="px-3.5 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-bold hover:bg-emerald-100 transition">🔔 টেস্ট</button>
+        </div>
       </div>
 
       <!-- Data Backup & Reset -->
@@ -1167,6 +1465,53 @@
     </div>
   </div>
 
+  <!-- Voice Food Input Modal (Web Speech API + AI) -->
+  <div id="voice-modal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-slate-950/75 backdrop-blur-sm p-0 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-t-3xl sm:rounded-3xl max-w-md w-full p-5 pb-14 sm:pb-5 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 id="lbl-voice-modal-title" class="text-base font-extrabold text-slate-900 dark:text-white">🎤 মুখে বলে খাবার যোগ করুন</h3>
+        <button id="btn-close-voice-modal" type="button" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center font-bold">✕</button>
+      </div>
+      <div class="flex flex-col items-center gap-3 py-2">
+        <button id="btn-voice-mic-toggle" type="button" class="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-3xl shadow-lg flex items-center justify-center active:scale-95 transition">🎤</button>
+        <p id="voice-status-text" class="text-xs font-semibold text-slate-500 dark:text-slate-400 text-center">মাইকে ট্যাপ করে বলুন, যেমন: "১ কাপ ভাত আর ১টি ডিম"</p>
+      </div>
+      <form id="voice-parse-form" class="space-y-2.5">
+        <textarea id="voice-transcript-inp" rows="2" class="w-full p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="যেমন: ১ বাটি ভাত ও রুই মাছের ঝোল"></textarea>
+        <button id="btn-voice-analyze" type="submit" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition">✨ ক্যালরি হিসাব করে যোগ করুন</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Social Share Card Modal (PNG Generator for WhatsApp / Facebook) -->
+  <div id="share-card-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-4 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-3">
+      <div class="flex items-center justify-between">
+        <h3 id="lbl-share-modal-title" class="text-sm font-extrabold text-slate-900 dark:text-white">🖼️ দৈনিক রিপোর্ট শেয়ার কার্ড</h3>
+        <button id="btn-close-share-modal" type="button" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center font-bold">✕</button>
+      </div>
+      <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-950">
+        <canvas id="share-card-canvas" width="720" height="900" class="w-full h-auto block"></canvas>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <button id="btn-share-native" type="button" class="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition">📤 শেয়ার করুন</button>
+        <button id="btn-share-download" type="button" class="py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-bold text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition">📥 ছবি ডাউনলোড</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auto PWA Install Banner (Appears ONLY when Android Chrome fires beforeinstallprompt) -->
+  <div id="pwa-install-banner" class="fixed bottom-20 inset-x-3 z-40 hidden max-w-lg mx-auto rounded-2xl bg-slate-900/95 dark:bg-emerald-950/95 text-white border border-emerald-400/30 shadow-2xl p-3 flex items-center justify-between gap-2.5 backdrop-blur-lg">
+    <div class="flex items-center gap-2.5 min-w-0">
+      <span class="text-xl shrink-0">📲</span>
+      <p id="lbl-pwa-banner-txt" class="text-xs font-bold leading-snug truncate">অ্যাপটি হোম স্ক্রিনে ইনস্টল করুন</p>
+    </div>
+    <div class="flex items-center gap-1.5 shrink-0">
+      <button id="btn-pwa-banner-install" type="button" class="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs transition">ইনস্টল</button>
+      <button id="btn-pwa-banner-close" type="button" class="w-7 h-7 rounded-lg bg-white/10 text-white text-xs font-bold flex items-center justify-center">✕</button>
+    </div>
+  </div>
+
   <!-- Confirm Modal (replaces window.confirm) -->
   <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
     <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-xs w-full p-5 border border-slate-200 dark:border-slate-800 shadow-xl space-y-4">
@@ -1182,6 +1527,92 @@
   <!-- Toast Notification -->
   <div id="toast" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl bg-slate-900 dark:bg-emerald-600 text-white text-xs font-semibold shadow-lg opacity-0 pointer-events-none transition-all duration-200 whitespace-nowrap"></div>
 
+  <!-- Weight & Body Fat Pro Bottom Sheet Modal -->
+  <div id="weight-details-modal" class="hidden fixed inset-0 z-50 bg-slate-950/65 backdrop-blur-md items-end sm:items-center justify-center p-3">
+    <div class="w-full max-w-sm bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-extrabold text-slate-900 dark:text-white">⚖️ ওজন ও বডি ট্র্যাকার প্রো</h3>
+        <button id="btn-close-weight-modal" type="button" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 font-bold text-xs">✕</button>
+      </div>
+      <form id="weight-log-form" class="space-y-3">
+        <div class="grid grid-cols-3 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1">ওজন (kg) *</label>
+            <input id="input-today-weight" type="number" min="25" max="250" step="0.1" required class="w-full px-2.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-center" placeholder="70.0">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1">বডি ফ্যাট (%)</label>
+            <input id="input-today-fat" type="number" min="3" max="65" step="0.1" class="w-full px-2.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-center" placeholder="18.5">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 mb-1">কোমর (cm)</label>
+            <input id="input-today-waist" type="number" min="40" max="180" step="0.5" class="w-full px-2.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-center" placeholder="82">
+          </div>
+        </div>
+        <label class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/70 cursor-pointer">
+          <span class="text-xs font-bold text-slate-700 dark:text-slate-200">🏋️ আজ জিম / ওয়ার্কআউট করেছি</span>
+          <span class="relative inline-flex items-center">
+            <input id="chk-today-gym" type="checkbox" class="sr-only peer">
+            <span class="w-10 h-5 bg-slate-300 dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></span>
+          </span>
+        </label>
+        <button id="btn-save-weight" type="submit" class="w-full py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-sm active:scale-95 transition">✓ সেভ করুন</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Compact Draggable Floating AI Coach Icon Button (Bottom-Right above Nav) -->
+  <button id="btn-ai-coach-fab" type="button" aria-label="AI Nutrition Coach" title="AI কোচ (টেনে সরাতে পারবেন)" class="fixed bottom-24 right-3.5 z-[45] w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 via-teal-600 to-indigo-600 text-white shadow-lg shadow-slate-900/30 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform border-2 border-white/80 dark:border-slate-800 select-none" style="touch-action: none;">
+    <span class="text-xl leading-none pointer-events-none">🤖</span>
+  </button>
+
+  <!-- Floating AI Coach Chat Modal -->
+  <div id="ai-coach-modal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-md items-end sm:items-center justify-center p-3">
+    <div class="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-700 shadow-2xl overflow-hidden flex flex-col max-h-[82vh]">
+      <div class="px-4 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-9 h-9 rounded-2xl bg-white/20 flex items-center justify-center text-lg shrink-0">🤖</div>
+          <div class="min-w-0">
+            <h3 id="lbl-coach-title" class="text-sm font-extrabold truncate">AI নিউট্রিশন কোচ</h3>
+            <p id="lbl-coach-sub" class="text-[11px] text-emerald-100 truncate">আজকের ক্যালরি ও ডায়েট নিয়ে যেকোনো প্রশ্ন করুন</p>
+          </div>
+        </div>
+        <button id="btn-close-ai-coach" type="button" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-sm font-bold shrink-0">✕</button>
+      </div>
+      <div id="ai-coach-messages" class="flex-1 overflow-y-auto p-3.5 space-y-2.5 bg-slate-50/80 dark:bg-slate-950/60 min-h-[220px]"></div>
+      <div class="px-3 pt-2 pb-1 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 flex gap-1.5 overflow-x-auto no-scrollbar">
+        <button type="button" data-coach-prompt="ওজন কমাতে আজ বাকি ক্যালরিতে কী খাবো?" class="shrink-0 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 text-[11px] font-bold border border-emerald-200/70 dark:border-emerald-800">🥗 আজ কী খাবো?</button>
+        <button type="button" data-coach-prompt="আমার প্রোটিন কম হচ্ছে কেন? সহজ দেশি সমাধান বলো।" class="shrink-0 px-2.5 py-1 rounded-full bg-sky-50 dark:bg-sky-950/70 text-sky-700 dark:text-sky-300 text-[11px] font-bold border border-sky-200/70 dark:border-sky-800">💪 প্রোটিন বাড়াবো কীভাবে?</button>
+        <button type="button" data-coach-prompt="আমার আজকের ক্যালরি ও ম্যাক্রো রিপোর্ট বিশ্লেষণ করে দাও।" class="shrink-0 px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 text-[11px] font-bold border border-amber-200/70 dark:border-amber-800">📊 আজকের বিশ্লেষণ</button>
+      </div>
+      <form id="ai-coach-form" class="p-3 bg-white dark:bg-slate-900 flex items-center gap-2">
+        <button id="btn-coach-mic" type="button" aria-label="Voice Assistant" title="ভয়েস দিয়ে বলুন" class="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-base shrink-0 active:scale-90 transition">🎤</button>
+        <input id="ai-coach-input" type="text" class="flex-1 min-w-0 px-3.5 py-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="প্রশ্ন করুন বা বলুন 'আমি ১ বাটি ভাত খেয়েছি'...">
+        <button id="btn-ai-coach-send" type="submit" class="px-3.5 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shrink-0 active:scale-95 transition">পাঠান</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Meal Photo Lightbox Modal -->
+  <div id="photo-lightbox-modal" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-700/40">
+      <img id="lightbox-img" src="" alt="Meal photo" class="w-full max-h-[60vh] object-cover bg-slate-900">
+      <div class="p-3.5 flex items-center justify-between gap-2">
+        <div class="min-w-0">
+          <p id="lightbox-title" class="text-sm font-bold text-slate-900 dark:text-white truncate"></p>
+          <p id="lightbox-sub" class="text-[11px] text-slate-500 dark:text-slate-400"></p>
+        </div>
+        <button id="btn-close-lightbox" type="button" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold shrink-0">বন্ধ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden input to attach a photo to any logged meal -->
+  <input id="meal-photo-attach-input" type="file" accept="image/*" capture="environment" class="hidden">
+
+  <!-- Confetti Celebration Canvas -->
+  <canvas id="confetti-canvas" class="pointer-events-none fixed inset-0 z-[70] w-full h-full hidden"></canvas>
+
   <script>
     (function () {
       'use strict';
@@ -1190,11 +1621,28 @@
       const APP_ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#047857"/></linearGradient></defs><rect width="192" height="192" rx="44" fill="url(#g)"/><path d="M96 34c14 18 22 36 22 56a36 36 0 0 1-36 36 36 36 0 0 1-36-36c0-12 4-24 12-34 0 16 10 24 20 24 8 0 14-18 18-46z" fill="#fff" opacity="0.95"/><path d="M124 88c14 10 24 26 24 44a42 42 0 0 1-42 42H86a42 42 0 0 1-42-42" fill="none" stroke="#a7f3d0" stroke-width="12" stroke-linecap="round"/></svg>';
       const ICON_URI = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(APP_ICON_SVG);
 
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-          navigator.serviceWorker.register('./sw.js').catch(function () {});
-        });
-      }
+      try {
+        document.getElementById('app-favicon').href = ICON_URI;
+        document.getElementById('app-apple-icon').href = ICON_URI;
+        const manifestObj = {
+          name: 'খাবার ও ক্যালরি হিসাব — Daily Calorie Tracker',
+          short_name: 'ক্যালরি হিসাব',
+          description: 'Bilingual Bangla & English Daily Food and Calorie Tracker',
+          start_url: '.',
+          display: 'standalone',
+          background_color: '#f8fafc',
+          theme_color: '#059669',
+          icons: [
+            { src: ICON_URI, sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
+            { src: ICON_URI, sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }
+          ]
+        };
+        const blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = URL.createObjectURL(blob);
+        document.head.appendChild(link);
+      } catch (e) {}
 
 
 
@@ -1760,7 +2208,9 @@
           weightLog: {},
           accent: 'emerald',
           groqApiKey: '',
-          aiKeysLocked: false
+          aiKeysLocked: false,
+          reminderOn: false,
+          reminderTime: '20:30'
         };
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
@@ -1769,7 +2219,7 @@
           return {
             ...defaults,
             lang: parsed.lang === 'en' ? 'en' : 'bn',
-            theme: ['light', 'dark', 'glass', 'dark-glass'].indexOf(parsed.theme) !== -1 ? parsed.theme : 'glass',
+            theme: ['light', 'dark', 'glass', 'dark-glass', 'neumorph', 'clay'].indexOf(parsed.theme) !== -1 ? parsed.theme : 'glass',
             goals: { ...defaults.goals, ...(parsed.goals || {}) },
             logsByDate: parsed.logsByDate && typeof parsed.logsByDate === 'object' ? parsed.logsByDate : {},
             customFoods: Array.isArray(parsed.customFoods) ? parsed.customFoods : [],
@@ -1779,7 +2229,9 @@
             weightLog: parsed.weightLog && typeof parsed.weightLog === 'object' ? parsed.weightLog : {},
             accent: typeof parsed.accent === 'string' ? parsed.accent : 'emerald',
             groqApiKey: typeof parsed.groqApiKey === 'string' ? parsed.groqApiKey : '',
-            aiKeysLocked: Boolean(parsed.aiKeysLocked)
+            aiKeysLocked: Boolean(parsed.aiKeysLocked),
+            reminderOn: Boolean(parsed.reminderOn),
+            reminderTime: typeof parsed.reminderTime === 'string' ? parsed.reminderTime : '20:30'
           };
         } catch (e) {
           return defaults;
@@ -1807,7 +2259,9 @@
             weightLog: state.weightLog || {},
             accent: state.accent || 'emerald',
             groqApiKey: state.groqApiKey || '',
-            aiKeysLocked: Boolean(state.aiKeysLocked)
+            aiKeysLocked: Boolean(state.aiKeysLocked),
+            reminderOn: Boolean(state.reminderOn),
+            reminderTime: state.reminderTime || '20:30'
           };
           localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
         } catch (e) {}
@@ -1938,7 +2392,8 @@
           protein: Math.round((Number(food.protein) || 0) * mult * 10) / 10,
           carbs: Math.round((Number(food.carbs) || 0) * mult * 10) / 10,
           fat: Math.round((Number(food.fat) || 0) * mult * 10) / 10,
-          time: timeStr
+          time: timeStr,
+          photo: food.photo || ''
         };
         day.entries.push(entry);
         saveState();
@@ -1988,11 +2443,25 @@
         renderFoodLibrary();
       }
 
+      function haptic(ms) {
+        try { if (navigator.vibrate) navigator.vibrate(ms || 25); } catch (e) {}
+      }
+
+      function triggerWaterBottleAnim() {
+        const box = document.getElementById('water-bottle-box');
+        if (!box) return;
+        box.classList.remove('water-pop');
+        void box.offsetWidth;
+        box.classList.add('water-pop');
+      }
+
       function adjustWater(delta) {
+        haptic(delta > 0 ? 35 : 18);
         const day = getDayLog(state.selectedDate);
         day.water = Math.max(0, (day.water || 0) + delta);
         saveState();
         renderToday();
+        if (delta > 0) triggerWaterBottleAnim();
       }
 
       function switchTab(tabName) {
@@ -2000,9 +2469,12 @@
         ['today', 'add', 'reports', 'settings'].forEach(function (name) {
           const sec = document.getElementById('view-' + name);
           if (name === tabName) {
-            sec.classList.remove('hidden');
+            sec.classList.remove('hidden', 'page-enter-slide');
+            void sec.offsetWidth;
+            sec.classList.add('page-enter-slide');
           } else {
             sec.classList.add('hidden');
+            sec.classList.remove('page-enter-slide');
           }
         });
         document.querySelectorAll('.nav-btn').forEach(function (btn) {
@@ -2068,11 +2540,15 @@
       }
 
       function applyTheme() {
-        const isDark = state.theme === 'dark' || state.theme === 'dark-glass';
+        const isDark = state.theme === 'dark' || state.theme === 'dark-glass' || state.theme === 'cyberpunk';
         document.documentElement.classList.toggle('dark', isDark);
-        document.body.classList.remove('theme-glass', 'theme-dark-glass');
+        document.body.classList.remove('theme-glass', 'theme-dark-glass', 'theme-neumorph', 'theme-clay', 'theme-cyberpunk', 'theme-nature');
         if (state.theme === 'glass') document.body.classList.add('theme-glass');
         if (state.theme === 'dark-glass') document.body.classList.add('theme-dark-glass');
+        if (state.theme === 'neumorph') document.body.classList.add('theme-neumorph');
+        if (state.theme === 'clay') document.body.classList.add('theme-clay');
+        if (state.theme === 'cyberpunk') document.body.classList.add('theme-cyberpunk');
+        if (state.theme === 'nature') document.body.classList.add('theme-nature');
         document.querySelectorAll('.theme-pill').forEach(function (btn) {
           const act = btn.getAttribute('data-set-theme') === state.theme;
           btn.classList.toggle('bg-emerald-600', act);
@@ -2290,9 +2766,9 @@
         ringEl.setAttribute('stroke', isOver ? 'url(#ringGradOver)' : 'url(#ringGradOk)');
 
         document.getElementById('ring-consumed').textContent = Math.round(netCal);
-        document.getElementById('stat-goal').textContent = Math.round(goalCal);
-        document.getElementById('stat-eaten-val').textContent = Math.round(totals.calories);
-        document.getElementById('stat-burned-val').textContent = Math.round(burned);
+        animateCounterEl(document.getElementById('stat-goal'), Math.round(goalCal), '', '');
+        animateCounterEl(document.getElementById('stat-eaten-val'), Math.round(totals.calories), '', '');
+        animateCounterEl(document.getElementById('stat-burned-val'), Math.round(burned), '', '');
         document.getElementById('stat-burned-inline').textContent = 'kcal';
         document.getElementById('burn-status-text').textContent = t('burnStatus').replace('{n}', burned);
 
@@ -2302,13 +2778,13 @@
         const overBanner = document.getElementById('over-limit-banner');
         if (isOver) {
           remLabel.textContent = t('overBy');
-          remVal.textContent = '+' + Math.abs(diff);
+          animateCounterEl(remVal, Math.abs(diff), '+', '');
           remVal.className = 'text-[26px] font-extrabold tracking-tight leading-none text-rose-600 dark:text-rose-400';
           overBanner.textContent = t('overWarning').replace('{n}', Math.abs(diff));
           overBanner.classList.remove('hidden');
         } else {
           remLabel.textContent = t('remaining');
-          remVal.textContent = diff;
+          animateCounterEl(remVal, diff, '', '');
           remVal.className = 'text-[28px] font-extrabold tracking-tight leading-none text-emerald-700 dark:text-emerald-300';
           overBanner.classList.add('hidden');
         }
@@ -2331,7 +2807,12 @@
           .replace('{c}', wCount)
           .replace('{g}', gWater)
           .replace('{ml}', wCount * 250);
-        document.getElementById('bar-water').style.width = Math.min(100, (wCount / gWater) * 100).toFixed(1) + '%';
+        const wPctNum = Math.min(100, Math.round((wCount / gWater) * 100));
+        document.getElementById('bar-water').style.width = wPctNum + '%';
+        const wbFill = document.getElementById('water-bottle-fill');
+        const wbPct = document.getElementById('water-bottle-pct');
+        if (wbFill) wbFill.style.height = wPctNum + '%';
+        if (wbPct) wbPct.textContent = wPctNum + '%';
         const cupsEl = document.getElementById('water-cups-row');
         if (cupsEl) {
           const cupCount = Math.min(8, Math.max(4, gWater));
@@ -2376,14 +2857,19 @@
                 const nm = state.lang === 'bn' ? item.nameBn : item.nameEn;
                 const srv = state.lang === 'bn' ? item.servingBn : item.servingEn;
                 const qtyTag = item.qty !== 1 ? ' × ' + item.qty : '';
-                return '<div class="py-2.5 border-t border-slate-100 dark:border-slate-800/80 space-y-1.5">' +
+                const thumbHtml = item.photo
+                  ? '<button type="button" data-view-photo="' + item.id + '" class="w-10 h-10 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0 shadow-sm"><img src="' + item.photo + '" loading="lazy" alt="" class="w-full h-full object-cover"></button>'
+                  : '';
+                return '<div data-swipe-entry="' + item.id + '" class="meal-swipe-row py-2.5 border-t border-slate-100 dark:border-slate-800/80 space-y-1.5 rounded-xl px-1">' +
                   '<div class="flex items-start justify-between gap-2">' +
+                    thumbHtml +
                     '<p class="text-sm font-semibold text-slate-800 dark:text-slate-100 leading-snug break-words flex-1 min-w-0">' + escapeHtml(nm) + '</p>' +
                     '<span class="text-sm font-bold text-slate-900 dark:text-white shrink-0 whitespace-nowrap">' + item.calories + ' <span class="text-[10px] font-normal text-slate-400">kcal</span></span>' +
                   '</div>' +
                   '<div class="flex items-center justify-between gap-2">' +
                     '<p class="text-[11px] text-slate-500 dark:text-slate-400 break-words flex-1 min-w-0">' + escapeHtml(srv + qtyTag) + ' · P:' + item.protein + 'g C:' + item.carbs + 'g F:' + item.fat + 'g</p>' +
                     '<div class="flex items-center gap-1.5 shrink-0">' +
+                      '<button type="button" data-attach-photo="' + item.id + '" aria-label="Photo" title="Photo" class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-950/60 flex items-center justify-center text-xs transition">📷</button>' +
                       '<button type="button" data-edit-entry="' + item.id + '" aria-label="Edit" class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 flex items-center justify-center text-xs font-bold transition">✎</button>' +
                       '<button type="button" data-del-entry="' + item.id + '" aria-label="Delete" class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/60 flex items-center justify-center text-xs font-bold transition">✕</button>' +
                     '</div>' +
@@ -2408,7 +2894,29 @@
             cleanRows +
           '</div>';
         }).join('');
-        document.getElementById('meals-container').innerHTML = mealsHtml;
+        const emptyHeroHtml = mealCount === 0 ? (
+          '<div class="p-5 text-center bg-gradient-to-b from-emerald-50/70 to-transparent dark:from-emerald-950/30 space-y-2.5">' +
+            '<div class="w-20 h-20 mx-auto rounded-full bg-emerald-100/80 dark:bg-emerald-900/50 flex items-center justify-center shadow-inner">' +
+              '<svg class="w-12 h-12 text-emerald-600 dark:text-emerald-400" viewBox="0 0 64 64" fill="none">' +
+                '<circle cx="32" cy="34" r="22" stroke="currentColor" stroke-width="2.8" fill="currentColor" fill-opacity="0.1"/>' +
+                '<circle cx="32" cy="34" r="14" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4 3"/>' +
+                '<path d="M22 28c2-5 6-8 10-8s8 3 10 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>' +
+                '<circle cx="27" cy="35" r="2.2" fill="currentColor"/><circle cx="37" cy="35" r="2.2" fill="currentColor"/>' +
+                '<path d="M28 41c2.5 2 5.5 2 8 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>' +
+              '</svg>' +
+            '</div>' +
+            '<p class="text-sm font-extrabold text-slate-800 dark:text-slate-100">' + (state.lang === 'bn' ? 'আপনি আজ এখনো কিছু লগ করেননি!' : 'No meals logged today yet!') + '</p>' +
+            '<p class="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto">' + (state.lang === 'bn' ? 'ক্যামেরা দিয়ে খাবারের ছবি তুলুন, ভয়েস বলুন অথবা নিচের + বাটন দিয়ে যোগ করুন।' : 'Snap a meal photo, use voice input, or tap + below to start tracking.') + '</p>' +
+            '<div class="flex items-center justify-center gap-2 pt-1">' +
+              '<button type="button" id="btn-empty-cam" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-sm active:scale-95 transition">📷 ' + (state.lang === 'bn' ? 'ক্যামেরা' : 'Camera') + '</button>' +
+              '<button type="button" id="btn-empty-add" class="px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold active:scale-95 transition">➕ ' + (state.lang === 'bn' ? 'খাবার যোগ' : 'Add Food') + '</button>' +
+            '</div>' +
+          '</div>'
+        ) : '';
+        document.getElementById('meals-container').innerHTML = emptyHeroHtml + mealsHtml;
+        if (typeof updateGamificationPill === 'function') updateGamificationPill();
+        if (typeof updateAppBadgeCount === 'function') updateAppBadgeCount(Math.max(0, diff));
+        if (typeof syncStepAndJournalUI === 'function') syncStepAndJournalUI();
         const prevDateStr = shiftDateStr(state.selectedDate, -1);
         const prevLog = state.logsByDate[prevDateStr];
         const showCopyYest = (!dayLog.entries || dayLog.entries.length === 0) && prevLog && Array.isArray(prevLog.entries) && prevLog.entries.length > 0;
@@ -2647,7 +3155,14 @@
         const wWrap = document.getElementById('weight-chart-wrap');
         const wLatestEl = document.getElementById('weight-latest-text');
         const todayW = state.weightLog && state.weightLog[state.selectedDate];
+        const todayBody = (state.bodyLog && state.bodyLog[state.selectedDate]) || {};
         if (todayW) document.getElementById('input-today-weight').value = todayW;
+        const fatInp = document.getElementById('input-today-fat');
+        const waistInp = document.getElementById('input-today-waist');
+        const gymChk = document.getElementById('chk-today-gym');
+        if (fatInp) fatInp.value = todayBody.fat || '';
+        if (waistInp) waistInp.value = todayBody.waist || '';
+        if (gymChk) gymChk.checked = Boolean(todayBody.gym);
         if (weightChartInstance) { weightChartInstance.destroy(); weightChartInstance = null; }
         if (wDates.length === 0) {
           wLatestEl.textContent = '';
@@ -2655,27 +3170,50 @@
           wEmpty.classList.remove('hidden');
           wWrap.classList.add('hidden');
         } else {
-          const latestVal = state.weightLog[wDates[wDates.length - 1]];
-          wLatestEl.textContent = t('weightLatest').replace('{w}', latestVal);
+          const lastDs = wDates[wDates.length - 1];
+          const latestVal = state.weightLog[lastDs];
+          const lastBody = (state.bodyLog && state.bodyLog[lastDs]) || {};
+          const extraTxt = (lastBody.fat ? ' · ফ্যাট ' + lastBody.fat + '%' : '') + (lastBody.waist ? ' · কোমর ' + lastBody.waist + 'cm' : '') + (lastBody.gym ? ' · 🏋️' : '');
+          wLatestEl.textContent = t('weightLatest').replace('{w}', latestVal) + extraTxt;
           wEmpty.classList.add('hidden');
           wWrap.classList.remove('hidden');
           if (typeof Chart !== 'undefined') {
             const ctxWt = document.getElementById('weightChart').getContext('2d');
+            const fatSeries = wDates.map(function (ds) {
+              const b = state.bodyLog && state.bodyLog[ds];
+              return b && b.fat ? Number(b.fat) : null;
+            });
+            const hasFat = fatSeries.some(function (v) { return v !== null; });
+            const wtDatasets = [{
+              label: 'ওজন (kg)',
+              data: wDates.map(function (ds) { return Number(state.weightLog[ds]); }),
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16,185,129,0.14)',
+              borderWidth: 2.5,
+              tension: 0.35,
+              fill: true,
+              pointRadius: 3.5,
+              pointBackgroundColor: '#059669'
+            }];
+            if (hasFat) {
+              wtDatasets.push({
+                label: 'বডি ফ্যাট (%)',
+                data: fatSeries,
+                borderColor: '#f59e0b',
+                backgroundColor: 'rgba(245,158,11,0.10)',
+                borderWidth: 2.2,
+                borderDash: [5, 4],
+                tension: 0.35,
+                spanGaps: true,
+                pointRadius: 3.5,
+                pointBackgroundColor: '#d97706'
+              });
+            }
             weightChartInstance = new Chart(ctxWt, {
               type: 'line',
               data: {
                 labels: wDates.map(function (ds) { return ds.slice(5); }),
-                datasets: [{
-                  label: 'kg',
-                  data: wDates.map(function (ds) { return Number(state.weightLog[ds]); }),
-                  borderColor: '#10b981',
-                  backgroundColor: 'rgba(16,185,129,0.14)',
-                  borderWidth: 2.5,
-                  tension: 0.35,
-                  fill: true,
-                  pointRadius: 3.5,
-                  pointBackgroundColor: '#059669'
-                }]
+                datasets: wtDatasets
               },
               options: {
                 responsive: true,
@@ -2706,6 +3244,8 @@
             '</button>';
           }).join('');
         }
+        if (typeof renderBadgesAndLevel === 'function') renderBadgesAndLevel();
+        if (typeof renderMealPhotoGallery === 'function') renderMealPhotoGallery();
       }
 
       function syncGoalInputs() {
@@ -2923,7 +3463,11 @@
         renderFoodLibrary();
       });
 
-      document.getElementById('food-search-input').addEventListener('input', renderFoodLibrary);
+      let searchDebounceTimer = null;
+      document.getElementById('food-search-input').addEventListener('input', function () {
+        if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(renderFoodLibrary, 220);
+      });
       document.getElementById('food-cat-pills').addEventListener('click', function (e) {
         const btn = e.target.closest('[data-pick-cat]');
         if (!btn) return;
@@ -3716,6 +4260,7 @@
         const fat = Number(document.getElementById('cam-fat').value) || 0;
         const saveLib = document.getElementById('cam-save-lib').checked;
 
+        const camPreviewSrc = (document.getElementById('cam-preview-img') || {}).src || '';
         const foodObj = {
           id: 'cam_' + Date.now(),
           nameEn: name,
@@ -3727,7 +4272,8 @@
           carbs: carb,
           fat: fat,
           barcode: camScannedBarcode || '',
-          emoji: camScannedBarcode ? '🏷️' : '📷'
+          emoji: camScannedBarcode ? '🏷️' : '📷',
+          photo: camPreviewSrc.indexOf('data:image') === 0 ? shrinkDataUrlThumb(camPreviewSrc) : ''
         };
         confirmBeforeAddFood(foodObj, meal, 1, function () {
           let wasDupLib = false;
@@ -3868,7 +4414,10 @@
         if (fbUnsub) { fbUnsub(); fbUnsub = null; }
         const ref = getCloudDocRef();
         if (!ref) return;
+        const skel = document.getElementById('cloud-skeleton');
+        if (skel && Object.keys(state.logsByDate || {}).length === 0) skel.classList.remove('hidden');
         fbUnsub = ref.onSnapshot(function (snap) {
+          if (skel) skel.classList.add('hidden');
           if (!snap.exists) {
             pushStateToCloud(false);
             return;
@@ -3941,6 +4490,9 @@
           }
           fbAuth = firebase.auth();
           fbDb = firebase.firestore();
+          try {
+            fbDb.enablePersistence({ synchronizeTabs: true }).catch(function () {});
+          } catch (e) {}
           fbAuth.onAuthStateChanged(function (user) {
             fbUser = user || null;
             if (msgEl) msgEl.textContent = '';
@@ -4387,7 +4939,7 @@
 
         resEl.innerHTML =
           '<div class="flex items-start gap-3">' +
-            (imgUrl ? '<img src="' + escapeHtml(imgUrl) + '" alt="Product" class="w-16 h-16 rounded-xl object-cover bg-white border border-slate-200 dark:border-slate-700 shrink-0">' : '') +
+            (imgUrl ? '<img loading="lazy" src="' + escapeHtml(imgUrl) + '" alt="Product" class="w-16 h-16 rounded-xl object-cover bg-white border border-slate-200 dark:border-slate-700 shrink-0">' : '') +
             '<div class="min-w-0 flex-1">' +
               '<p class="text-sm font-extrabold text-slate-900 dark:text-white leading-snug">' + escapeHtml(pName) + '</p>' +
               (brand || qty ? '<p class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-0.5">' + escapeHtml([brand, qty].filter(Boolean).join(' · ')) + '</p>' : '') +
@@ -4701,7 +5253,16 @@
         const w = Number(document.getElementById('input-today-weight').value);
         if (!w || w < 25 || w > 250) return;
         if (!state.weightLog || typeof state.weightLog !== 'object') state.weightLog = {};
+        if (!state.bodyLog || typeof state.bodyLog !== 'object') state.bodyLog = {};
         state.weightLog[state.selectedDate] = Math.round(w * 10) / 10;
+        const fatVal = Number((document.getElementById('input-today-fat') || {}).value) || 0;
+        const waistVal = Number((document.getElementById('input-today-waist') || {}).value) || 0;
+        const gymVal = Boolean((document.getElementById('chk-today-gym') || {}).checked);
+        state.bodyLog[state.selectedDate] = {
+          fat: fatVal > 0 ? Math.round(fatVal * 10) / 10 : 0,
+          waist: waistVal > 0 ? Math.round(waistVal * 10) / 10 : 0,
+          gym: gymVal
+        };
         saveState();
         renderReports();
         showToast(t('toastWeightSaved').replace('{w}', state.weightLog[state.selectedDate]));
@@ -4732,6 +5293,1238 @@
       document.getElementById('btn-contact-telegram').addEventListener('click', function () {
         showToast(state.lang === 'bn' ? 'Telegram লিংক শীঘ্রই যুক্ত হবে' : 'Telegram link coming soon');
       });
+
+      /* ======================== GLOBAL HAPTIC FEEDBACK ======================== */
+      document.addEventListener('click', function (e) {
+        if (e.target.closest('button')) haptic(18);
+      });
+
+      /* ======================== PWA INSTALL PROMPT BANNER ======================== */
+      let deferredPwaPrompt = null;
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredPwaPrompt = e;
+        let dismissed = false;
+        try { dismissed = localStorage.getItem('cal_pwa_dismissed') === '1'; } catch (err) {}
+        if (!dismissed) {
+          const b = document.getElementById('pwa-install-banner');
+          if (b) b.classList.remove('hidden');
+        }
+      });
+      document.getElementById('btn-pwa-banner-install').addEventListener('click', function () {
+        if (!deferredPwaPrompt) return;
+        deferredPwaPrompt.prompt();
+        deferredPwaPrompt.userChoice.then(function () {
+          deferredPwaPrompt = null;
+          document.getElementById('pwa-install-banner').classList.add('hidden');
+        });
+      });
+      document.getElementById('btn-pwa-banner-close').addEventListener('click', function () {
+        document.getElementById('pwa-install-banner').classList.add('hidden');
+        try { localStorage.setItem('cal_pwa_dismissed', '1'); } catch (err) {}
+      });
+
+      /* ======================== VOICE INPUT (WEB SPEECH API + AI) ======================== */
+      let speechRec = null;
+      let isListening = false;
+
+      function closeVoiceModal() {
+        if (speechRec && isListening) {
+          try { speechRec.stop(); } catch (e) {}
+        }
+        isListening = false;
+        const micBtn = document.getElementById('btn-voice-mic-toggle');
+        if (micBtn) micBtn.classList.remove('mic-listening');
+        const m = document.getElementById('voice-modal');
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+
+      document.getElementById('btn-voice-today').addEventListener('click', function () {
+        document.getElementById('voice-transcript-inp').value = '';
+        document.getElementById('voice-status-text').textContent = state.lang === 'bn'
+          ? 'মাইকে ট্যাপ করে বলুন, যেমন: "১ কাপ ভাত আর ১টি ডিম"'
+          : 'Tap mic and speak, e.g. "1 cup rice and 1 boiled egg"';
+        const m = document.getElementById('voice-modal');
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      });
+      document.getElementById('btn-close-voice-modal').addEventListener('click', closeVoiceModal);
+
+      document.getElementById('btn-voice-mic-toggle').addEventListener('click', function () {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const statusEl = document.getElementById('voice-status-text');
+        const micBtn = document.getElementById('btn-voice-mic-toggle');
+        if (!SR) {
+          statusEl.textContent = state.lang === 'bn'
+            ? 'এই ব্রাউজারে মাইক সাপোর্ট নেই—নিচের বক্সে লিখে সাবমিট করুন।'
+            : 'Voice mic not supported here — type your meal below.';
+          return;
+        }
+        if (isListening && speechRec) {
+          try { speechRec.stop(); } catch (e) {}
+          return;
+        }
+        speechRec = new SR();
+        speechRec.lang = state.lang === 'bn' ? 'bn-BD' : 'en-US';
+        speechRec.interimResults = true;
+        speechRec.maxAlternatives = 1;
+        isListening = true;
+        micBtn.classList.add('mic-listening');
+        haptic(40);
+        statusEl.textContent = state.lang === 'bn' ? '🎙️ শুনছি... খাবারের নাম ও পরিমাণ বলুন' : '🎙️ Listening... speak your meal';
+
+        speechRec.onresult = function (ev) {
+          let txt = '';
+          for (let i = 0; i < ev.results.length; i++) {
+            txt += ev.results[i][0].transcript;
+          }
+          document.getElementById('voice-transcript-inp').value = txt.trim();
+        };
+        speechRec.onerror = function () {
+          isListening = false;
+          micBtn.classList.remove('mic-listening');
+          statusEl.textContent = state.lang === 'bn' ? '⚠️ মাইক শোনা যায়নি—আবার চেষ্টা করুন বা লিখে দিন।' : '⚠️ Could not hear — try again or type below.';
+        };
+        speechRec.onend = function () {
+          isListening = false;
+          micBtn.classList.remove('mic-listening');
+          const cur = (document.getElementById('voice-transcript-inp').value || '').trim();
+          statusEl.textContent = cur
+            ? (state.lang === 'bn' ? '✅ রেকর্ড হয়েছে! এখন নিচের বাটনে ট্যাপ করুন।' : '✅ Captured! Tap Calculate & Add below.')
+            : (state.lang === 'bn' ? 'মাইকে ট্যাপ করে আবার বলুন' : 'Tap mic to speak again');
+        };
+        try { speechRec.start(); } catch (e) { isListening = false; micBtn.classList.remove('mic-listening'); }
+      });
+
+      document.getElementById('voice-parse-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const spoken = (document.getElementById('voice-transcript-inp').value || '').trim();
+        const statusEl = document.getElementById('voice-status-text');
+        if (!spoken) return;
+        statusEl.textContent = t('cfAutoLoading');
+
+        const groqKey = (state.groqApiKey || '').trim();
+        const geminiKey = (state.geminiApiKey || '').trim();
+        let parsedFood = null;
+
+        if (groqKey || geminiKey) {
+          const prompt = 'User spoke this meal: "' + spoken + '". Extract the food name (in Bangla and English), serving size, and total estimated calories, protein, carbs, fat. Reply ONLY with raw JSON: {"nameEn":"...","nameBn":"...","servingEn":"...","servingBn":"...","calories":250,"protein":12,"carbs":30,"fat":8}';
+          let rawText = '';
+          if (groqKey) {
+            try { const gr = await callGroqVision(groqKey, prompt, null); rawText = gr.text || ''; } catch (e1) {}
+          }
+          if (!rawText && geminiKey) {
+            try {
+              const mr = await callGeminiWithFallback(geminiKey, [{ text: prompt }]);
+              const j = mr.json;
+              rawText = j && j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts && j.candidates[0].content.parts[0] ? j.candidates[0].content.parts[0].text : '';
+            } catch (e2) {}
+          }
+          if (rawText) {
+            try {
+              const m = rawText.match(/\{[\s\S]*\}/);
+              if (m) parsedFood = JSON.parse(m[0]);
+            } catch (ep) {}
+          }
+        }
+
+        // Local fallback match if AI unavailable
+        if (!parsedFood) {
+          const low = spoken.toLowerCase();
+          const hit = state.customFoods.concat(PRESET_FOODS).find(function (f) {
+            return (f.nameBn && low.includes(f.nameBn.toLowerCase().split(' ')[0])) ||
+                   (f.nameEn && low.includes(f.nameEn.toLowerCase().split(' ')[0]));
+          });
+          if (hit) {
+            const wt = parseWeightGrams(spoken);
+            const mult = wt.type === 'qty' ? Math.max(0.5, Math.min(10, wt.val || 1)) : 1;
+            parsedFood = {
+              nameEn: hit.nameEn, nameBn: hit.nameBn,
+              servingEn: hit.servingEn, servingBn: hit.servingBn,
+              calories: Math.round(hit.calories * mult),
+              protein: Math.round(hit.protein * mult * 10) / 10,
+              carbs: Math.round(hit.carbs * mult * 10) / 10,
+              fat: Math.round(hit.fat * mult * 10) / 10
+            };
+          }
+        }
+
+        if (!parsedFood) {
+          statusEl.textContent = t('cfAutoNotFound');
+          return;
+        }
+        closeVoiceModal();
+        const autoMeal = getAutoMealByTime();
+        confirmBeforeAddFood({
+          id: 'v_' + Date.now(),
+          nameEn: parsedFood.nameEn || spoken,
+          nameBn: parsedFood.nameBn || parsedFood.nameEn || spoken,
+          servingEn: parsedFood.servingEn || '1 serving',
+          servingBn: parsedFood.servingBn || parsedFood.servingEn || '১ পরিবেশন',
+          calories: Math.round(Number(parsedFood.calories) || 0),
+          protein: Math.round((Number(parsedFood.protein) || 0) * 10) / 10,
+          carbs: Math.round((Number(parsedFood.carbs) || 0) * 10) / 10,
+          fat: Math.round((Number(parsedFood.fat) || 0) * 10) / 10
+        }, autoMeal, 1);
+      });
+
+      /* ======================== SOCIAL SHARE CARD GENERATOR (CANVAS PNG) ======================== */
+      function drawShareCard() {
+        const canvas = document.getElementById('share-card-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        const tot = getDayTotals(state.selectedDate);
+        const goal = Math.max(1, Number(state.goals.calories) || 2000);
+        const burned = Math.round(tot.burned || 0);
+        const net = Math.max(0, Math.round(tot.calories - burned));
+        const rem = Math.round(goal - net);
+        const streak = computeStreak();
+        const pct = Math.min(1, net / goal);
+
+        // Background gradient
+        const bg = ctx.createLinearGradient(0, 0, W, H);
+        bg.addColorStop(0, '#022c22');
+        bg.addColorStop(0.55, '#0f172a');
+        bg.addColorStop(1, '#042f2e');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // Ambient glow circles
+        ctx.fillStyle = 'rgba(16,185,129,0.22)';
+        ctx.beginPath(); ctx.arc(130, 140, 200, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(56,189,248,0.16)';
+        ctx.beginPath(); ctx.arc(600, 740, 210, 0, Math.PI * 2); ctx.fill();
+
+        // Frosted inner card
+        ctx.fillStyle = 'rgba(255,255,255,0.08)';
+        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(44, 48, W - 88, H - 96, 36);
+        ctx.fill(); ctx.stroke();
+
+        // Header
+        ctx.fillStyle = '#34d399';
+        ctx.font = 'bold 26px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(state.lang === 'bn' ? 'খাবার ও ক্যালরি হিসাব' : 'Daily Calorie Tracker', W / 2, 118);
+
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = '600 20px Inter, sans-serif';
+        ctx.fillText(formatDisplayDate(state.selectedDate, state.lang) + (streak > 0 ? '  ·  🔥 ' + streak + (state.lang === 'bn' ? ' দিন স্ট্রিক' : 'd Streak') : ''), W / 2, 158);
+
+        // Progress Ring
+        const cx = W / 2, cy = 355, r = 128;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255,255,255,0.14)';
+        ctx.lineWidth = 22;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
+        ctx.strokeStyle = net > goal ? '#fb7185' : '#10b981';
+        ctx.lineCap = 'round';
+        ctx.lineWidth = 22;
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '800 58px Inter, sans-serif';
+        ctx.fillText(String(net), cx, cy + 10);
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '600 22px Inter, sans-serif';
+        ctx.fillText('/ ' + goal + ' kcal', cx, cy + 48);
+
+        // Stats Boxes (Eaten | Remaining | Burned)
+        const boxes = [
+          { lbl: state.lang === 'bn' ? 'খাওয়া' : 'Eaten', val: Math.round(tot.calories) + ' kcal', col: '#34d399' },
+          { lbl: state.lang === 'bn' ? (rem >= 0 ? 'বাকি' : 'বেশি') : (rem >= 0 ? 'Left' : 'Over'), val: Math.abs(rem) + ' kcal', col: rem >= 0 ? '#38bdf8' : '#fb7185' },
+          { lbl: state.lang === 'bn' ? 'বার্ন' : 'Burned', val: burned + ' kcal', col: '#fb923c' }
+        ];
+        boxes.forEach(function (b, idx) {
+          const bx = 76 + idx * 196;
+          ctx.fillStyle = 'rgba(255,255,255,0.08)';
+          ctx.beginPath(); ctx.roundRect(bx, 530, 178, 102, 22); ctx.fill();
+          ctx.fillStyle = '#cbd5e1';
+          ctx.font = '600 18px Inter, sans-serif';
+          ctx.fillText(b.lbl, bx + 89, 568);
+          ctx.fillStyle = b.col;
+          ctx.font = '800 24px Inter, sans-serif';
+          ctx.fillText(b.val, bx + 89, 608);
+        });
+
+        // Macros + Water Line
+        ctx.fillStyle = '#e2e8f0';
+        ctx.font = '700 22px Inter, sans-serif';
+        ctx.fillText('🥩 P: ' + Math.round(tot.protein) + 'g   ·   🍚 C: ' + Math.round(tot.carbs) + 'g   ·   🥑 F: ' + Math.round(tot.fat) + 'g', W / 2, 695);
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '700 22px Inter, sans-serif';
+        ctx.fillText('💧 ' + (tot.water || 0) + ' / ' + state.goals.water + (state.lang === 'bn' ? ' গ্লাস পানি' : ' Glasses Water'), W / 2, 742);
+
+        // Brand Footer
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '700 19px Inter, sans-serif';
+        ctx.fillText('Powered by জাহিদ', W / 2, 818);
+      }
+
+      function closeShareModal() {
+        const m = document.getElementById('share-card-modal');
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+
+      document.getElementById('btn-open-share-card').addEventListener('click', function () {
+        drawShareCard();
+        const m = document.getElementById('share-card-modal');
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      });
+      document.getElementById('btn-close-share-modal').addEventListener('click', closeShareModal);
+
+      document.getElementById('btn-share-download').addEventListener('click', function () {
+        const canvas = document.getElementById('share-card-canvas');
+        const a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'calorie_report_' + state.selectedDate + '.png';
+        a.click();
+        showToast(t('toastExported'));
+      });
+
+      document.getElementById('btn-share-native').addEventListener('click', function () {
+        const canvas = document.getElementById('share-card-canvas');
+        canvas.toBlob(async function (blob) {
+          if (blob && navigator.share && navigator.canShare) {
+            const file = new File([blob], 'calorie_report.png', { type: 'image/png' });
+            if (navigator.canShare({ files: [file] })) {
+              try {
+                await navigator.share({ files: [file], title: t('title') });
+                return;
+              } catch (e) {}
+            }
+          }
+          // Fallback to download if Web Share with files isn't supported
+          document.getElementById('btn-share-download').click();
+        }, 'image/png');
+      });
+
+      /* ======================== DAILY REMINDER (WEB NOTIFICATION) ======================== */
+      function syncReminderInputs() {
+        const chk = document.getElementById('chk-reminder-on');
+        const tm = document.getElementById('input-reminder-time');
+        if (chk) chk.checked = Boolean(state.reminderOn);
+        if (tm) tm.value = state.reminderTime || '20:30';
+      }
+
+      function sendMealReminderNotification(isTest) {
+        if (!('Notification' in window)) {
+          showToast(state.lang === 'bn' ? 'এই ব্রাউজারে নোটিফিকেশন সাপোর্ট নেই' : 'Notifications not supported here');
+          return;
+        }
+        const title = state.lang === 'bn' ? '🍽️ খাবার ও ক্যালরি হিসাব' : '🍽️ Daily Calorie Tracker';
+        const body = state.lang === 'bn' ? 'আজকের খাবার কি লগ করেছেন? এখনই ক্যালরি আপডেট করুন!' : 'Did you log today\'s meals? Update your calorie log now!';
+        if (Notification.permission === 'granted') {
+          try { new Notification(title, { body: body, icon: ICON_URI }); } catch (e) {}
+          if (isTest) showToast(state.lang === 'bn' ? '🔔 টেস্ট নোটিফিকেশন পাঠানো হয়েছে!' : '🔔 Test notification sent!');
+        } else {
+          Notification.requestPermission().then(function (perm) {
+            if (perm === 'granted') {
+              try { new Notification(title, { body: body, icon: ICON_URI }); } catch (e) {}
+              showToast(state.lang === 'bn' ? '✅ রিমাইন্ডার নোটিফিকেশন চালু হয়েছে!' : '✅ Reminder notifications enabled!');
+            }
+          });
+        }
+      }
+
+      document.getElementById('chk-reminder-on').addEventListener('change', function (e) {
+        state.reminderOn = Boolean(e.target.checked);
+        saveState();
+        if (state.reminderOn) sendMealReminderNotification(false);
+      });
+      document.getElementById('input-reminder-time').addEventListener('change', function (e) {
+        state.reminderTime = e.target.value || '20:30';
+        saveState();
+      });
+      document.getElementById('btn-test-reminder').addEventListener('click', function () {
+        sendMealReminderNotification(true);
+      });
+      syncReminderInputs();
+
+      // Check once on load if reminder time passed today & 0 meals logged
+      setTimeout(function () {
+        if (!state.reminderOn) return;
+        const today = getLocalDateStr(0);
+        const log = state.logsByDate[today];
+        const hasEntries = log && Array.isArray(log.entries) && log.entries.length > 0;
+        let remindedToday = '';
+        try { remindedToday = localStorage.getItem('cal_reminded_date') || ''; } catch (e) {}
+        if (!hasEntries && remindedToday !== today) {
+          const parts = (state.reminderTime || '20:30').split(':').map(Number);
+          const now = new Date();
+          if (now.getHours() > parts[0] || (now.getHours() === parts[0] && now.getMinutes() >= parts[1])) {
+            sendMealReminderNotification(false);
+            try { localStorage.setItem('cal_reminded_date', today); } catch (e) {}
+          }
+        }
+      }, 2500);
+
+
+      /* ======================== PREMIUM UPGRADES (COUNTERS, GAMIFICATION, PHOTO GALLERY, AI COACH) ======================== */
+      const _counterCache = {};
+      function animateCounterEl(el, targetVal, prefix, suffix) {
+        if (!el) return;
+        const target = Math.round(Number(targetVal) || 0);
+        const id = el.id || ('c_' + Math.random());
+        const start = typeof _counterCache[id] === 'number' ? _counterCache[id] : 0;
+        _counterCache[id] = target;
+        if (start === target) {
+          el.textContent = (prefix || '') + target + (suffix || '');
+          return;
+        }
+        const duration = 420;
+        const t0 = performance.now();
+        function step(now) {
+          const p = Math.min(1, (now - t0) / duration);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const cur = Math.round(start + (target - start) * eased);
+          el.textContent = (prefix || '') + cur + (suffix || '');
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      function shrinkDataUrlThumb(dataUrl) {
+        try {
+          const img = new Image();
+          img.src = dataUrl;
+          if (!img.width || !img.height) return dataUrl.length < 48000 ? dataUrl : '';
+          const maxD = 320;
+          let w = img.width, h = img.height;
+          if (w > maxD || h > maxD) {
+            if (w > h) { h = Math.round((h * maxD) / w); w = maxD; }
+            else { w = Math.round((w * maxD) / h); h = maxD; }
+          }
+          const c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          c.getContext('2d').drawImage(img, 0, 0, w, h);
+          return c.toDataURL('image/jpeg', 0.65);
+        } catch (e) {
+          return dataUrl.length < 48000 ? dataUrl : '';
+        }
+      }
+
+      function computeGamificationStats() {
+        const streak = computeStreak();
+        let totalMeals = 0;
+        let totalDays = 0;
+        let photoCount = 0;
+        Object.keys(state.logsByDate || {}).forEach(function (d) {
+          const log = state.logsByDate[d];
+          if (log && Array.isArray(log.entries) && log.entries.length > 0) {
+            totalDays++;
+            totalMeals += log.entries.length;
+            log.entries.forEach(function (en) { if (en.photo) photoCount++; });
+          }
+        });
+        const todayWater = (getDayTotals(getLocalDateStr(0)).water) || 0;
+        const xp = (totalMeals * 15) + (streak * 40) + (todayWater >= 8 ? 30 : 0) + (photoCount * 20);
+        const level = Math.min(20, Math.floor(xp / 150) + 1);
+        const pct = Math.min(100, Math.round(((xp % 150) / 150) * 100));
+        const ranksBn = ['নতুন শুরু', 'সচেতন', 'নিয়মিত ট্র্যাকার', 'হেলথ চ্যাম্পিয়ন', 'ফিটনেস যোদ্ধা', 'ক্যালরি মাস্টার'];
+        const ranksEn = ['Beginner', 'Mindful', 'Steady Tracker', 'Health Champ', 'Fitness Warrior', 'Calorie Master'];
+        const rIdx = Math.min(ranksBn.length - 1, Math.floor((level - 1) / 2));
+        const rankName = state.lang === 'bn' ? ranksBn[rIdx] : ranksEn[rIdx];
+        const badges = [
+          { id: 'first', icon: '🌟', bn: 'প্রথম পদক্ষেপ', en: 'First Meal', descBn: '১টি খাবার লগ', descEn: '1+ meal logged', unlocked: totalMeals >= 1 },
+          { id: 's3', icon: '🔥', bn: '৩ দিনের স্ট্রিক', en: '3-Day Streak', descBn: 'টানা ৩ দিন', descEn: '3 days in a row', unlocked: streak >= 3 },
+          { id: 's7', icon: '🏆', bn: '৭ দিনের স্ট্রিক', en: '7-Day Streak', descBn: 'টানা ৭ দিন', descEn: '7 days in a row', unlocked: streak >= 7 },
+          { id: 's30', icon: '👑', bn: 'ক্যালরি মাস্টার', en: 'Calorie Master', descBn: 'টানা ৩০ দিন', descEn: '30-day streak', unlocked: streak >= 30 },
+          { id: 'water', icon: '💧', bn: 'হাইড্রেশন হিরো', en: 'Hydration Hero', descBn: '৮ গ্লাস পানি', descEn: '8 glasses water', unlocked: todayWater >= 8 },
+          { id: 'snap', icon: '📸', bn: 'ফুড ফটোগ্রাফার', en: 'Food Snapper', descBn: 'ছবিসহ খাবার লগ', descEn: 'Log with photo', unlocked: photoCount >= 1 }
+        ];
+        return { streak, totalMeals, totalDays, photoCount, xp, level, pct, rankName, badges };
+      }
+
+      function updateGamificationPill() {
+        const g = computeGamificationStats();
+        const pill = document.getElementById('level-pill-today');
+        if (pill) pill.textContent = '⭐ Lv.' + g.level;
+      }
+
+      function renderBadgesAndLevel() {
+        const g = computeGamificationStats();
+        const subEl = document.getElementById('level-rank-sub');
+        const xpEl = document.getElementById('level-xp-badge');
+        const barEl = document.getElementById('level-xp-bar');
+        const gridEl = document.getElementById('badges-grid');
+        if (subEl) subEl.textContent = (state.lang === 'bn' ? 'লেভেল ' + g.level + ' · ' : 'Level ' + g.level + ' · ') + g.rankName;
+        if (xpEl) xpEl.textContent = g.xp + ' XP';
+        if (barEl) barEl.style.width = Math.max(8, g.pct) + '%';
+        if (gridEl) {
+          gridEl.innerHTML = g.badges.map(function (b) {
+            return '<div class="relative overflow-hidden rounded-2xl p-3 border text-center transition ' +
+              (b.unlocked
+                ? 'badge-shine bg-gradient-to-br from-amber-100 via-yellow-50 to-emerald-100 dark:from-amber-500/20 dark:via-emerald-500/15 dark:to-teal-500/20 border-amber-400/80 dark:border-amber-400/50 shadow-md shadow-amber-500/10'
+                : 'bg-slate-100/70 dark:bg-slate-800/50 border-slate-200/70 dark:border-slate-800 opacity-50 grayscale') + '">' +
+              (!b.unlocked ? '<span class="absolute top-1.5 right-1.5 text-[10px]">🔒</span>' : '<span class="absolute top-1.5 right-1.5 text-[10px]">✨</span>') +
+              '<div class="text-2xl leading-none mb-1.5">' + b.icon + '</div>' +
+              '<p class="text-[11px] font-extrabold text-slate-900 dark:text-white leading-tight">' + escapeHtml(state.lang === 'bn' ? b.bn : b.en) + '</p>' +
+              '<p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">' + escapeHtml(state.lang === 'bn' ? b.descBn : b.descEn) + '</p>' +
+            '</div>';
+          }).join('');
+        }
+      }
+
+      function renderMealPhotoGallery() {
+        const grid = document.getElementById('meal-photo-gallery');
+        const cntEl = document.getElementById('photo-gallery-count');
+        if (!grid) return;
+        const photos = [];
+        Object.keys(state.logsByDate || {}).sort().reverse().forEach(function (d) {
+          const log = state.logsByDate[d];
+          if (!log || !Array.isArray(log.entries)) return;
+          log.entries.forEach(function (e) {
+            if (e.photo) photos.push({ date: d, entry: e });
+          });
+        });
+        if (cntEl) cntEl.textContent = state.lang === 'bn' ? (photos.length + 'টি ছবি') : (photos.length + ' photos');
+        if (photos.length === 0) {
+          grid.className = 'block';
+          grid.innerHTML = '<div class="py-5 px-3 text-center space-y-2 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-dashed border-slate-200 dark:border-slate-700">' +
+            '<div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-100/80 dark:bg-emerald-950/60 flex items-center justify-center text-emerald-600 dark:text-emerald-400">' +
+              '<svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>' +
+            '</div>' +
+            '<p class="text-xs font-bold text-slate-700 dark:text-slate-200">' + (state.lang === 'bn' ? 'এখনো কোনো খাবারের ছবি নেই' : 'No Meal Photos Yet') + '</p>' +
+            '<p class="text-[11px] text-slate-500 dark:text-slate-400 max-w-xs mx-auto">' + (state.lang === 'bn' ? 'ক্যামেরা দিয়ে ছবি তুললে বা খাবারের পাশে 📷 ট্যাপ করলে সুন্দর গ্যালারি তৈরি হবে।' : 'Snap a meal photo or tap 📷 on any meal to build your gallery.') + '</p>' +
+          '</div>';
+          return;
+        }
+        grid.className = 'columns-2 gap-2.5 space-y-2.5';
+        grid.innerHTML = photos.slice(0, 18).map(function (p, idx) {
+          const nm = state.lang === 'bn' ? p.entry.nameBn : p.entry.nameEn;
+          const aspectCls = idx % 3 === 0 ? 'aspect-[4/5]' : 'aspect-square';
+          return '<button type="button" data-gallery-photo="' + p.entry.id + '" data-gallery-date="' + p.date + '" class="break-inside-avoid w-full group relative ' + aspectCls + ' rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 shadow-sm active:scale-95 transition block">' +
+            '<img src="' + p.entry.photo + '" loading="lazy" alt="' + escapeHtml(nm) + '" class="w-full h-full object-cover">' +
+            '<div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-2 text-left">' +
+              '<p class="text-[11px] font-bold text-white truncate">' + escapeHtml(nm) + '</p>' +
+              '<p class="text-[10px] font-semibold text-emerald-300">' + p.entry.calories + ' kcal · ' + p.date.slice(5) + '</p>' +
+            '</div>' +
+          '</button>';
+        }).join('');
+      }
+
+      let pendingAttachEntryId = '';
+      function openPhotoLightbox(photoUrl, title, sub) {
+        const m = document.getElementById('photo-lightbox-modal');
+        document.getElementById('lightbox-img').src = photoUrl;
+        document.getElementById('lightbox-title').textContent = title || '';
+        document.getElementById('lightbox-sub').textContent = sub || '';
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      }
+      document.getElementById('btn-close-lightbox').addEventListener('click', function () {
+        const m = document.getElementById('photo-lightbox-modal');
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      });
+      document.getElementById('photo-lightbox-modal').addEventListener('click', function (e) {
+        if (e.target.id === 'photo-lightbox-modal') {
+          e.target.classList.add('hidden');
+          e.target.classList.remove('flex');
+        }
+      });
+
+      document.getElementById('meals-container').addEventListener('click', function (e) {
+        const emptyCam = e.target.closest('#btn-empty-cam');
+        if (emptyCam) {
+          const camBtn = document.getElementById('btn-camera-today');
+          if (camBtn) camBtn.click();
+          return;
+        }
+        const emptyAdd = e.target.closest('#btn-empty-add');
+        if (emptyAdd) { switchTab('add'); return; }
+
+        const viewBtn = e.target.closest('[data-view-photo]');
+        if (viewBtn) {
+          const id = viewBtn.getAttribute('data-view-photo');
+          const day = getDayLog(state.selectedDate);
+          const item = (day.entries || []).find(function (x) { return x.id === id; });
+          if (item && item.photo) {
+            openPhotoLightbox(item.photo, state.lang === 'bn' ? item.nameBn : item.nameEn, item.calories + ' kcal · ' + (item.time || state.selectedDate));
+          }
+          return;
+        }
+        const attachBtn = e.target.closest('[data-attach-photo]');
+        if (attachBtn) {
+          pendingAttachEntryId = attachBtn.getAttribute('data-attach-photo');
+          const inp = document.getElementById('meal-photo-attach-input');
+          inp.value = '';
+          inp.click();
+        }
+      });
+
+      document.getElementById('meal-photo-attach-input').addEventListener('change', function (e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file || !pendingAttachEntryId) return;
+        compressImageFile(file, function (dataUrl) {
+          const img = new Image();
+          img.onload = function () {
+            const maxD = 340;
+            let w = img.width, h = img.height;
+            if (w > maxD || h > maxD) {
+              if (w > h) { h = Math.round((h * maxD) / w); w = maxD; }
+              else { w = Math.round((w * maxD) / h); h = maxD; }
+            }
+            const c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            c.getContext('2d').drawImage(img, 0, 0, w, h);
+            const thumb = c.toDataURL('image/jpeg', 0.68);
+            const day = getDayLog(state.selectedDate);
+            const item = (day.entries || []).find(function (x) { return x.id === pendingAttachEntryId; });
+            if (item) {
+              item.photo = thumb;
+              saveState();
+              renderAll();
+              showToast(state.lang === 'bn' ? '📸 খাবারের ছবি সংরক্ষণ হয়েছে!' : '📸 Meal photo saved!');
+            }
+            pendingAttachEntryId = '';
+          };
+          img.src = dataUrl;
+        });
+      });
+
+      document.getElementById('meal-photo-gallery').addEventListener('click', function (e) {
+        const btn = e.target.closest('[data-gallery-photo]');
+        if (!btn) return;
+        const id = btn.getAttribute('data-gallery-photo');
+        const dt = btn.getAttribute('data-gallery-date');
+        const log = state.logsByDate[dt];
+        const item = log && (log.entries || []).find(function (x) { return x.id === id; });
+        if (item && item.photo) {
+          openPhotoLightbox(item.photo, state.lang === 'bn' ? item.nameBn : item.nameEn, item.calories + ' kcal · ' + dt);
+        }
+      });
+
+      /* ======================== FLOATING AI NUTRITION COACH ======================== */
+      const coachHistory = [];
+      function renderCoachMessages() {
+        const box = document.getElementById('ai-coach-messages');
+        if (!box) return;
+        if (coachHistory.length === 0) {
+          const totals = getDayTotals(state.selectedDate);
+          const rem = Math.max(0, (Number(state.goals.calories) || 2000) - Math.round(totals.calories));
+          const greet = state.lang === 'bn'
+            ? 'হ্যালো! আমি আপনার AI নিউট্রিশন কোচ 🤖। আজ আপনার খাওয়া হয়েছে ' + Math.round(totals.calories) + ' kcal এবং বাকি আছে ' + rem + ' kcal। ওজন কমানো, প্রোটিন বা আজকের খাবার নিয়ে যেকোনো প্রশ্ন করুন!'
+            : 'Hi! I am your AI Nutrition Coach 🤖. Today you have eaten ' + Math.round(totals.calories) + ' kcal with ' + rem + ' kcal remaining. Ask me anything about meals, protein, or weight goals!';
+          coachHistory.push({ role: 'ai', text: greet });
+        }
+        box.innerHTML = coachHistory.map(function (m) {
+          const isUser = m.role === 'user';
+          return '<div class="flex ' + (isUser ? 'justify-end' : 'justify-start') + '">' +
+            '<div class="max-w-[85%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed whitespace-pre-line ' +
+              (isUser
+                ? 'bg-emerald-600 text-white rounded-br-sm font-medium'
+                : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/80 dark:border-slate-700 rounded-bl-sm shadow-sm') + '">' +
+              escapeHtml(m.text) +
+            '</div>' +
+          '</div>';
+        }).join('');
+        box.scrollTop = box.scrollHeight;
+      }
+
+      async function askAiNutritionCoach(question) {
+        const totals = getDayTotals(state.selectedDate);
+        const goalCal = Number(state.goals.calories) || 2000;
+        const goalPro = Number(state.goals.protein) || 100;
+        const remCal = Math.round(goalCal - totals.calories);
+        const remPro = Math.max(0, Math.round(goalPro - totals.protein));
+        const sysPrompt = 'You are a warm, practical Bangladeshi/South Asian nutrition coach. Answer concisely in ' +
+          (state.lang === 'bn' ? 'natural Bangla' : 'English') +
+          ' (3-5 short lines). User stats today: Eaten ' + Math.round(totals.calories) + '/' + goalCal +
+          ' kcal (Remaining ' + remCal + ' kcal), Protein ' + Math.round(totals.protein) + '/' + goalPro +
+          'g, Carbs ' + Math.round(totals.carbs) + 'g, Fat ' + Math.round(totals.fat) + 'g, Water ' + (totals.water || 0) + '/8 glasses.';
+
+        const groqKey = typeof normalizeGroqKey === 'function' ? normalizeGroqKey(state.groqApiKey) : (state.groqApiKey || '').trim();
+        if (groqKey) {
+          try {
+            const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + groqKey },
+              body: JSON.stringify({
+                model: 'llama-3.3-70b-versatile',
+                messages: [
+                  { role: 'system', content: sysPrompt },
+                  { role: 'user', content: question }
+                ],
+                temperature: 0.5,
+                max_tokens: 320
+              })
+            });
+            if (resp.ok) {
+              const data = await resp.json();
+              const txt = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+              if (txt) return txt.trim();
+            }
+          } catch (e) {}
+        }
+
+        const gemKey = (state.geminiApiKey || '').trim();
+        if (gemKey) {
+          try {
+            const resp = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + encodeURIComponent(gemKey), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: sysPrompt + '\n\nUser question: ' + question }] }]
+              })
+            });
+            if (resp.ok) {
+              const data = await resp.json();
+              const txt = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text;
+              if (txt) return txt.trim();
+            }
+          } catch (e) {}
+        }
+
+        const q = question.toLowerCase();
+        if (q.includes('প্রোটিন') || q.includes('protein')) {
+          return state.lang === 'bn'
+            ? 'আজ আপনার প্রোটিন এখনো ' + remPro + 'g বাকি আছে। সহজে পূরণ করতে ২টি সেদ্ধ ডিম (১২g), ১ পিস গ্রিল্ড চিকেন বা মাছ (২২-২৫g) অথবা ১ বাটি ঘন মসুর ডাল (৯g) খেতে পারেন। (আরও বিস্তারিত AI উত্তরের জন্য সেটিংসে ফ্রি Groq বা Gemini কী বসাতে পারেন।)'
+            : 'You still need ' + remPro + 'g of protein today. Quick options: 2 boiled eggs (12g), grilled chicken/fish (22-25g), or thick dal (9g). Add a free Groq/Gemini key in Settings for full AI coaching.';
+        }
+        if (q.includes('ওজন') || q.includes('কমা') || q.includes('খাবো') || q.includes('eat') || q.includes('weight')) {
+          return state.lang === 'bn'
+            ? 'আপনার আজ ' + Math.max(0, remCal) + ' kcal বাকি আছে। ওজন নিয়ন্ত্রণে রাখতে ভাত একটু কমিয়ে (১ কাপ) সাথে মাছ/মুরগি, শাকসবজি ও শসার সালাদ নিন এবং মিষ্টি পানীয় এড়িয়ে চলুন।'
+            : 'You have ' + Math.max(0, remCal) + ' kcal left today. For weight loss, stick to a smaller rice portion with fish/chicken, leafy veggies, cucumber salad, and skip sugary drinks.';
+        }
+        return state.lang === 'bn'
+          ? 'আজকের স্ট্যাটাস: ' + Math.round(totals.calories) + '/' + goalCal + ' kcal (বাকি ' + remCal + ' kcal), প্রোটিন ' + Math.round(totals.protein) + 'g, পানি ' + (totals.water || 0) + '/8 গ্লাস। ' + (remPro > 20 ? 'পরের মিলে ডিম, মাছ বা ডাল যোগ করলে ব্যালেন্স দারুণ হবে!' : 'আপনার আজকের ব্যালেন্স ভালো যাচ্ছে — পর্যাপ্ত পানি পান করুন!')
+          : 'Today: ' + Math.round(totals.calories) + '/' + goalCal + ' kcal (' + remCal + ' kcal left), Protein ' + Math.round(totals.protein) + 'g, Water ' + (totals.water || 0) + '/8. Keep hydrating and prioritize lean protein!';
+      }
+
+      function openAiCoachModal() {
+        const m = document.getElementById('ai-coach-modal');
+        renderCoachMessages();
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      }
+      function closeAiCoachModal() {
+        const m = document.getElementById('ai-coach-modal');
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+      document.getElementById('btn-ai-coach-fab').addEventListener('click', function () {
+        if (typeof triggerHaptic === 'function') triggerHaptic(25);
+        openAiCoachModal();
+      });
+      document.getElementById('btn-close-ai-coach').addEventListener('click', closeAiCoachModal);
+      document.getElementById('ai-coach-modal').addEventListener('click', function (e) {
+        if (e.target.id === 'ai-coach-modal') closeAiCoachModal();
+      });
+
+      async function handleCoachSend(text) {
+        const q = (text || '').trim();
+        if (!q) return;
+        coachHistory.push({ role: 'user', text: q });
+        coachHistory.push({ role: 'ai', text: state.lang === 'bn' ? '⏳ চিন্তা করছি...' : '⏳ Thinking...' });
+        renderCoachMessages();
+        const reply = await askAiNutritionCoach(q);
+        coachHistory[coachHistory.length - 1] = { role: 'ai', text: reply };
+        renderCoachMessages();
+      }
+
+      document.getElementById('ai-coach-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const inp = document.getElementById('ai-coach-input');
+        const val = inp.value;
+        inp.value = '';
+        handleCoachSend(val);
+      });
+      document.getElementById('ai-coach-modal').addEventListener('click', function (e) {
+        const chip = e.target.closest('[data-coach-prompt]');
+        if (!chip) return;
+        handleCoachSend(chip.getAttribute('data-coach-prompt'));
+      });
+
+
+      /* ======================== 10 NEXT-LEVEL FEATURES ======================== */
+      // 1. App Badging API
+      function updateAppBadgeCount(remCal) {
+        try {
+          if ('setAppBadge' in navigator) {
+            if (remCal > 0) navigator.setAppBadge(Math.round(remCal)).catch(function () {});
+            else if ('clearAppBadge' in navigator) navigator.clearAppBadge().catch(function () {});
+          }
+        } catch (e) {}
+      }
+
+      // 2. Pure Canvas Confetti Celebration Engine (Zero CDN dependency)
+      let _confettiLastDateWater = '';
+      function launchConfetti() {
+        const canvas = document.getElementById('confetti-canvas');
+        if (!canvas) return;
+        canvas.classList.remove('hidden');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const ctx = canvas.getContext('2d');
+        const colors = ['#10b981', '#38bdf8', '#f59e0b', '#ec4899', '#8b5cf6', '#ef4444'];
+        const particles = [];
+        for (let i = 0; i < 85; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: -20 - Math.random() * 140,
+            vx: (Math.random() - 0.5) * 4.5,
+            vy: 2.5 + Math.random() * 4.5,
+            size: 5 + Math.random() * 6,
+            rot: Math.random() * 360,
+            vrot: (Math.random() - 0.5) * 10,
+            color: colors[i % colors.length]
+          });
+        }
+        let frames = 0;
+        function draw() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          let alive = false;
+          particles.forEach(function (p) {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.08;
+            p.rot += p.vrot;
+            if (p.y < canvas.height + 20) alive = true;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rot * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+            ctx.restore();
+          });
+          frames++;
+          if (alive && frames < 160) requestAnimationFrame(draw);
+          else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.classList.add('hidden');
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+
+      // Trigger confetti when reaching 8/8 water goal
+      document.getElementById('btn-water-plus').addEventListener('click', function () {
+        setTimeout(function () {
+          const gW = Math.max(1, Number(state.goals.water) || 8);
+          const curW = (getDayTotals(state.selectedDate).water) || 0;
+          if (curW === gW && _confettiLastDateWater !== state.selectedDate) {
+            _confettiLastDateWater = state.selectedDate;
+            launchConfetti();
+            showToast(state.lang === 'bn' ? '🎉 দারুণ! আজকের পানির লক্ষ্য পূর্ণ হয়েছে!' : '🎉 Awesome! Daily water goal reached!');
+          }
+        }, 80);
+      });
+
+      // 3. Swipe Left to Delete / Swipe Right to Edit on Meals List
+      (function initMealSwipe() {
+        const container = document.getElementById('meals-container');
+        if (!container) return;
+        let startX = 0, startY = 0, activeRow = null, dx = 0;
+        container.addEventListener('touchstart', function (e) {
+          const row = e.target.closest('.meal-swipe-row');
+          if (!row || !e.touches || !e.touches[0]) return;
+          activeRow = row;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          dx = 0;
+        }, { passive: true });
+        container.addEventListener('touchmove', function (e) {
+          if (!activeRow || !e.touches || !e.touches[0]) return;
+          const curDx = e.touches[0].clientX - startX;
+          const curDy = e.touches[0].clientY - startY;
+          if (Math.abs(curDy) > Math.abs(curDx) && Math.abs(dx) < 12) return;
+          dx = Math.max(-110, Math.min(110, curDx));
+          activeRow.style.transform = 'translateX(' + dx + 'px)';
+          if (dx < -40) activeRow.style.backgroundColor = 'rgba(244, 63, 94, 0.14)';
+          else if (dx > 40) activeRow.style.backgroundColor = 'rgba(16, 185, 129, 0.14)';
+          else activeRow.style.backgroundColor = '';
+        }, { passive: true });
+        container.addEventListener('touchend', function () {
+          if (!activeRow) return;
+          const row = activeRow;
+          const entryId = row.getAttribute('data-swipe-entry');
+          row.style.transform = '';
+          row.style.backgroundColor = '';
+          activeRow = null;
+          if (!entryId) return;
+          if (dx < -70) {
+            if (typeof triggerHaptic === 'function') triggerHaptic(35);
+            const delBtn = row.querySelector('[data-del-entry]');
+            if (delBtn) delBtn.click();
+          } else if (dx > 70) {
+            if (typeof triggerHaptic === 'function') triggerHaptic(25);
+            const editBtn = row.querySelector('[data-edit-entry]');
+            if (editBtn) editBtn.click();
+          }
+          dx = 0;
+        });
+      })();
+
+      // 4. Intermittent Fasting Circular Timer (localStorage persistent)
+      let fastingState = { active: false, startTime: 0, targetHours: 16 };
+      try {
+        const savedFast = JSON.parse(localStorage.getItem('cal_fasting_state') || 'null');
+        if (savedFast && typeof savedFast === 'object') fastingState = Object.assign(fastingState, savedFast);
+      } catch (e) {}
+
+      function saveFastingState() {
+        try { localStorage.setItem('cal_fasting_state', JSON.stringify(fastingState)); } catch (e) {}
+      }
+
+      function renderFastingUI() {
+        const arc = document.getElementById('fasting-ring-arc');
+        const tEl = document.getElementById('fasting-timer-text');
+        const pEl = document.getElementById('fasting-pct-text');
+        const msgEl = document.getElementById('fasting-status-msg');
+        const tgtEl = document.getElementById('fasting-target-time');
+        const btn = document.getElementById('btn-fasting-toggle');
+        if (!arc || !tEl || !btn) return;
+        document.querySelectorAll('.fast-plan-btn').forEach(function (b) {
+          const hrs = Number(b.getAttribute('data-fast-hrs'));
+          const act = hrs === Number(fastingState.targetHours);
+          b.className = 'fast-plan-btn px-2 py-1 rounded-lg text-[10px] font-bold transition ' +
+            (act ? 'bg-emerald-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300');
+        });
+        const totalMs = (Number(fastingState.targetHours) || 16) * 3600 * 1000;
+        const circ = 263.89;
+        if (!fastingState.active || !fastingState.startTime) {
+          arc.style.strokeDashoffset = circ.toFixed(2);
+          tEl.textContent = '00:00:00';
+          pEl.textContent = '0%';
+          msgEl.textContent = state.lang === 'bn'
+            ? fastingState.targetHours + ' ঘণ্টার ফাস্টিং শুরু করতে নিচে ট্যাপ করুন।'
+            : 'Tap below to start a ' + fastingState.targetHours + 'h fasting timer.';
+          tgtEl.textContent = '';
+          btn.textContent = state.lang === 'bn' ? '▶ ফাস্টিং শুরু করুন' : '▶ Start Fasting';
+          btn.className = 'w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-sm active:scale-95 transition';
+          return;
+        }
+        const elapsed = Math.max(0, Date.now() - fastingState.startTime);
+        const pct = Math.min(1, elapsed / totalMs);
+        arc.style.strokeDashoffset = (circ * (1 - pct)).toFixed(2);
+        const totalSec = Math.floor(elapsed / 1000);
+        const hh = String(Math.floor(totalSec / 3600)).padStart(2, '0');
+        const mm = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+        const ss = String(totalSec % 60).padStart(2, '0');
+        tEl.textContent = hh + ':' + mm + ':' + ss;
+        pEl.textContent = Math.round(pct * 100) + '%';
+        const endDt = new Date(fastingState.startTime + totalMs);
+        const endStr = endDt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (pct >= 1) {
+          msgEl.textContent = state.lang === 'bn' ? '🎉 লক্ষ্য পূর্ণ হয়েছে! এখন স্বাস্থ্যকর খাবার খেতে পারেন।' : '🎉 Goal reached! Ready to break your fast.';
+        } else {
+          msgEl.textContent = state.lang === 'bn' ? '🔥 ফাস্টিং চলছে — ফ্যাট বার্নিং মোড!' : '🔥 Fasting in progress — fat burning mode!';
+        }
+        tgtEl.textContent = (state.lang === 'bn' ? 'শেষ হবে: ' : 'Ends at: ') + endStr;
+        btn.textContent = state.lang === 'bn' ? '⏹ ফাস্টিং শেষ করুন' : '⏹ End Fasting';
+        btn.className = 'w-full py-2 px-3 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-extrabold shadow-sm active:scale-95 transition';
+      }
+
+      document.getElementById('fasting-plan-pills').addEventListener('click', function (e) {
+        const b = e.target.closest('[data-fast-hrs]');
+        if (!b) return;
+        fastingState.targetHours = Number(b.getAttribute('data-fast-hrs')) || 16;
+        saveFastingState();
+        renderFastingUI();
+      });
+
+      document.getElementById('btn-fasting-toggle').addEventListener('click', function () {
+        if (typeof triggerHaptic === 'function') triggerHaptic(30);
+        if (fastingState.active) {
+          const elapsedHrs = ((Date.now() - fastingState.startTime) / 3600000);
+          if (elapsedHrs >= fastingState.targetHours) launchConfetti();
+          fastingState.active = false;
+          fastingState.startTime = 0;
+          saveFastingState();
+          renderFastingUI();
+          showToast(state.lang === 'bn' ? 'ফাস্টিং শেষ হয়েছে (' + elapsedHrs.toFixed(1) + ' ঘণ্টা)' : 'Fast ended (' + elapsedHrs.toFixed(1) + 'h)');
+        } else {
+          fastingState.active = true;
+          fastingState.startTime = Date.now();
+          saveFastingState();
+          renderFastingUI();
+          showToast(state.lang === 'bn' ? '⏳ ফাস্টিং টাইমার চালু হয়েছে!' : '⏳ Fasting timer started!');
+        }
+      });
+      setInterval(renderFastingUI, 1000);
+      renderFastingUI();
+
+      // 5. Step Counter (DeviceMotionEvent Pedometer + Manual +500 fallback)
+      let stepSensorActive = false;
+      let lastStepTs = 0;
+      function addStepsToToday(deltaSteps) {
+        const day = getDayLog(state.selectedDate);
+        day.steps = Math.max(0, (Number(day.steps) || 0) + deltaSteps);
+        const kcalDelta = Math.round(deltaSteps * 0.04);
+        if (kcalDelta > 0) day.burned = Math.max(0, (Number(day.burned) || 0) + kcalDelta);
+        saveState();
+        renderToday();
+      }
+      function syncStepAndJournalUI() {
+        const day = getDayLog(state.selectedDate);
+        const steps = Number(day.steps) || 0;
+        const stepEl = document.getElementById('step-count-val');
+        const subEl = document.getElementById('step-burn-sub');
+        if (stepEl) stepEl.textContent = steps.toLocaleString();
+        if (subEl) subEl.textContent = '≈ ' + Math.round(steps * 0.04) + ' kcal ' + (state.lang === 'bn' ? 'বার্ন' : 'burned');
+
+        const jInp = document.getElementById('input-daily-journal');
+        if (jInp && document.activeElement !== jInp) jInp.value = day.journal || '';
+        document.querySelectorAll('.mood-btn').forEach(function (b) {
+          const act = b.getAttribute('data-mood') === (day.mood || '');
+          b.className = 'mood-btn w-8 h-8 rounded-xl text-base flex items-center justify-center transition ' +
+            (act ? 'bg-emerald-500/20 ring-2 ring-emerald-500 scale-110' : 'bg-slate-100 dark:bg-slate-800 opacity-70');
+        });
+      }
+      function onDeviceMotionStep(ev) {
+        const acc = ev.accelerationIncludingGravity;
+        if (!acc) return;
+        const mag = Math.sqrt((acc.x || 0) * (acc.x || 0) + (acc.y || 0) * (acc.y || 0) + (acc.z || 0) * (acc.z || 0));
+        const now = Date.now();
+        if (mag > 12.8 && (now - lastStepTs) > 360) {
+          lastStepTs = now;
+          const day = getDayLog(state.selectedDate);
+          day.steps = (Number(day.steps) || 0) + 1;
+          if (day.steps % 25 === 0) day.burned = (Number(day.burned) || 0) + 1;
+          saveState();
+          syncStepAndJournalUI();
+        }
+      }
+      document.getElementById('btn-step-sensor').addEventListener('click', async function () {
+        const btn = document.getElementById('btn-step-sensor');
+        if (stepSensorActive) {
+          window.removeEventListener('devicemotion', onDeviceMotionStep);
+          stepSensorActive = false;
+          btn.textContent = '▶ সেন্সর';
+          showToast(state.lang === 'bn' ? 'স্টেপ সেন্সর বন্ধ করা হয়েছে' : 'Step sensor stopped');
+          return;
+        }
+        try {
+          if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+            const perm = await DeviceMotionEvent.requestPermission();
+            if (perm !== 'granted') {
+              showToast(state.lang === 'bn' ? 'মোশন সেন্সর পারমিশন পাওয়া যায়নি' : 'Motion sensor permission denied');
+              return;
+            }
+          }
+          window.addEventListener('devicemotion', onDeviceMotionStep);
+          stepSensorActive = true;
+          btn.textContent = '⏹ চালু আছে';
+          showToast(state.lang === 'bn' ? '👟 স্টেপ সেন্সর চালু হয়েছে! হাঁটলে কদম গণনা হবে।' : '👟 Step sensor active!');
+        } catch (e) {
+          showToast(state.lang === 'bn' ? 'এই ডিভাইসে সেন্সর নেই — +500 বাটন ব্যবহার করুন' : 'Sensor unavailable — use +500 button');
+        }
+      });
+      document.getElementById('btn-step-add500').addEventListener('click', function () {
+        if (typeof triggerHaptic === 'function') triggerHaptic(20);
+        addStepsToToday(500);
+        showToast(state.lang === 'bn' ? '👟 +৫০০ কদম (+২০ kcal বার্ন) যোগ হয়েছে!' : '👟 +500 steps (+20 kcal) added!');
+      });
+
+      // 6. Daily Journal & Mood handlers
+      document.getElementById('journal-mood-pills').addEventListener('click', function (e) {
+        const b = e.target.closest('[data-mood]');
+        if (!b) return;
+        const day = getDayLog(state.selectedDate);
+        day.mood = b.getAttribute('data-mood');
+        saveState();
+        syncStepAndJournalUI();
+      });
+      document.getElementById('btn-save-journal').addEventListener('click', function () {
+        const day = getDayLog(state.selectedDate);
+        day.journal = (document.getElementById('input-daily-journal').value || '').trim();
+        saveState();
+        showToast(state.lang === 'bn' ? '📔 আজকের জার্নাল সেভ হয়েছে!' : '📔 Daily journal saved!');
+      });
+
+      // 7. AI Smart Insights in Reports Tab
+      document.getElementById('btn-gen-ai-insight').addEventListener('click', async function () {
+        const box = document.getElementById('ai-insight-box');
+        const btn = document.getElementById('btn-gen-ai-insight');
+        if (!box || !btn) return;
+        btn.disabled = true;
+        box.textContent = state.lang === 'bn' ? '⏳ AI আপনার আজকের ডেটা বিশ্লেষণ করছে...' : '⏳ AI is analyzing your daily nutrition...';
+        const totals = getDayTotals(state.selectedDate);
+        const goalCal = Number(state.goals.calories) || 2000;
+        const prompt = 'My daily calorie goal is ' + goalCal + ' kcal, I ate ' + Math.round(totals.calories) +
+          ' kcal, protein ' + Math.round(totals.protein) + 'g, carbs ' + Math.round(totals.carbs) + 'g, fat ' +
+          Math.round(totals.fat) + 'g, water ' + (totals.water || 0) + ' glasses. Give me a 2-line short actionable advice in ' +
+          (state.lang === 'bn' ? 'Bengali.' : 'English.');
+        const reply = await askAiNutritionCoach(prompt);
+        box.textContent = '💡 ' + reply;
+        btn.disabled = false;
+      });
+
+      // 8. Professional PDF Report Export (Print-Ready Report with Charts & Table)
+      document.getElementById('btn-export-pdf-report').addEventListener('click', function () {
+        if (typeof triggerHaptic === 'function') triggerHaptic(25);
+        try {
+          const wCanvas = document.getElementById('weeklyChart');
+          const mCanvas = document.getElementById('macroChart');
+          const wImg = wCanvas ? wCanvas.toDataURL('image/png') : '';
+          const mImg = mCanvas ? mCanvas.toDataURL('image/png') : '';
+          const goalCal = Number(state.goals.calories) || 2000;
+          const rows = [];
+          for (let i = 6; i >= 0; i--) {
+            const ds = shiftDateStr(state.selectedDate, -i);
+            const tot = getDayTotals(ds);
+            const wt = state.weightLog && state.weightLog[ds] ? state.weightLog[ds] + ' kg' : '—';
+            rows.push('<tr><td>' + ds + '</td><td>' + Math.round(tot.calories) + ' kcal</td><td>' + Math.round(tot.protein) + 'g</td><td>' + Math.round(tot.carbs) + 'g</td><td>' + Math.round(tot.fat) + 'g</td><td>' + (tot.water || 0) + '</td><td>' + wt + '</td></tr>');
+          }
+          const reportHtml = '<!doctype html><html lang="bn"><head><meta charset="utf-8"><title>Calorie Report - ' + state.selectedDate + '</title>' +
+            '<style>body{font-family:system-ui,-apple-system,sans-serif;padding:24px;color:#0f172a;max-width:800px;margin:auto;}h1{color:#047857;margin:0 0 4px;}p.sub{color:#64748b;margin:0 0 18px;font-size:13px;}table{width:100%;border-collapse:collapse;margin-top:16px;font-size:12px;}th,td{border:1px solid #cbd5e1;padding:8px;text-align:center;}th{background:#ecfdf5;color:#065f46;}.charts{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0;}.charts img{max-width:48%;border:1px solid #e2e8f0;border-radius:12px;padding:8px;}@media print{.no-print{display:none;}}</style></head><body>' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;"><div><h1>খাবার ও ক্যালরি হিসাব — ৭ দিনের প্রফেশনাল রিপোর্ট</h1><p class="sub">তারিখ: ' + state.selectedDate + ' · দৈনিক লক্ষ্য: ' + goalCal + ' kcal · Powered by জাহিদ</p></div>' +
+            '<button class="no-print" onclick="window.print()" style="padding:10px 16px;background:#059669;color:#fff;border:none;border-radius:10px;font-weight:bold;cursor:pointer;">🖨️ Save as PDF</button></div>' +
+            '<div class="charts">' + (wImg ? '<img src="' + wImg + '" alt="Weekly Chart">' : '') + (mImg ? '<img src="' + mImg + '" alt="Macro Chart">' : '') + '</div>' +
+            '<table><thead><tr><th>তারিখ</th><th>ক্যালরি</th><th>প্রোটিন</th><th>কার্ব</th><th>ফ্যাট</th><th>পানি (গ্লাস)</th><th>ওজন</th></tr></thead><tbody>' + rows.join('') + '</tbody></table>' +
+            '<script>setTimeout(function(){try{window.print();}catch(e){}},400);</' + 'script></body></html>';
+          const win = window.open('', '_blank');
+          if (win) {
+            win.document.open();
+            win.document.write(reportHtml);
+            win.document.close();
+          } else {
+            window.print();
+          }
+        } catch (e) {
+          window.print();
+        }
+      });
+
+
+      /* ======================== UI POLISH: WEIGHT MODAL, DRAGGABLE AI FAB & COACH VOICE MIC ======================== */
+      (function initWeightModal() {
+        const modal = document.getElementById('weight-details-modal');
+        const openBtn = document.getElementById('btn-open-weight-modal');
+        const closeBtn = document.getElementById('btn-close-weight-modal');
+        if (!modal || !openBtn) return;
+        function openM() { modal.classList.remove('hidden'); modal.classList.add('flex'); }
+        function closeM() { modal.classList.add('hidden'); modal.classList.remove('flex'); }
+        openBtn.addEventListener('click', openM);
+        if (closeBtn) closeBtn.addEventListener('click', closeM);
+        modal.addEventListener('click', function (e) { if (e.target === modal) closeM(); });
+        const form = document.getElementById('weight-log-form');
+        if (form) form.addEventListener('submit', function () { setTimeout(closeM, 60); });
+      })();
+
+      // Draggable AI Coach FAB (tap to open, drag to reposition anywhere & remember position)
+      (function initDraggableCoachFab() {
+        const fab = document.getElementById('btn-ai-coach-fab');
+        if (!fab) return;
+        try {
+          const saved = JSON.parse(localStorage.getItem('cal_fab_pos') || 'null');
+          if (saved && typeof saved.left === 'number' && typeof saved.top === 'number') {
+            fab.style.right = 'auto';
+            fab.style.bottom = 'auto';
+            fab.style.left = Math.max(8, Math.min(window.innerWidth - 58, saved.left)) + 'px';
+            fab.style.top = Math.max(64, Math.min(window.innerHeight - 110, saved.top)) + 'px';
+          }
+        } catch (e) {}
+        let dragging = false, moved = false, startX = 0, startY = 0, origLeft = 0, origTop = 0;
+        fab.addEventListener('pointerdown', function (e) {
+          dragging = true;
+          moved = false;
+          const rect = fab.getBoundingClientRect();
+          startX = e.clientX;
+          startY = e.clientY;
+          origLeft = rect.left;
+          origTop = rect.top;
+          try { fab.setPointerCapture(e.pointerId); } catch (err) {}
+        });
+        fab.addEventListener('pointermove', function (e) {
+          if (!dragging) return;
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
+          if (Math.abs(dx) > 6 || Math.abs(dy) > 6) moved = true;
+          if (!moved) return;
+          const nx = Math.max(8, Math.min(window.innerWidth - 58, origLeft + dx));
+          const ny = Math.max(64, Math.min(window.innerHeight - 105, origTop + dy));
+          fab.style.right = 'auto';
+          fab.style.bottom = 'auto';
+          fab.style.left = nx + 'px';
+          fab.style.top = ny + 'px';
+        });
+        fab.addEventListener('pointerup', function () {
+          if (!dragging) return;
+          dragging = false;
+          if (moved) {
+            const rect = fab.getBoundingClientRect();
+            try { localStorage.setItem('cal_fab_pos', JSON.stringify({ left: Math.round(rect.left), top: Math.round(rect.top) })); } catch (e) {}
+            fab.dataset.justDragged = '1';
+            setTimeout(function () { delete fab.dataset.justDragged; }, 120);
+          }
+        });
+        fab.addEventListener('click', function (e) {
+          if (fab.dataset.justDragged === '1') {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+          }
+        }, true);
+      })();
+
+      // AI Coach Voice Mic Assistant (detects meal logging phrases & auto-adds or answers)
+      (function initCoachVoiceMic() {
+        const micBtn = document.getElementById('btn-coach-mic');
+        if (!micBtn) return;
+        micBtn.addEventListener('click', function () {
+          if (typeof triggerHaptic === 'function') triggerHaptic(25);
+          const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+          if (!SpeechRec) {
+            showToast(state.lang === 'bn' ? 'এই ব্রাউজারে ভয়েস ইনপুট সাপোর্ট নেই' : 'Voice input not supported in this browser');
+            return;
+          }
+          const rec = new SpeechRec();
+          rec.lang = state.lang === 'bn' ? 'bn-BD' : 'en-US';
+          rec.interimResults = false;
+          micBtn.classList.add('mic-listening', 'bg-emerald-600', 'text-white');
+          rec.onresult = async function (ev) {
+            micBtn.classList.remove('mic-listening', 'bg-emerald-600', 'text-white');
+            const transcript = (ev.results && ev.results[0] && ev.results[0][0] && ev.results[0][0].transcript) || '';
+            if (!transcript) return;
+            const low = transcript.toLowerCase();
+            const isFoodLog = low.includes('খেয়েছি') || low.includes('খাইছি') || low.includes('খেলাম') || low.includes('ate ') || low.includes('had ');
+            if (isFoodLog && typeof parseVoiceFoodWithAI === 'function') {
+              coachHistory.push({ role: 'user', text: '🎤 ' + transcript });
+              coachHistory.push({ role: 'ai', text: state.lang === 'bn' ? '⏳ আপনার খাবার শনাক্ত করে যোগ করছি...' : '⏳ Detecting and logging your meal...' });
+              renderCoachMessages();
+              try {
+                const parsed = await parseVoiceFoodWithAI(transcript);
+                if (parsed && parsed.name) {
+                  logFoodItem({
+                    nameEn: parsed.name,
+                    nameBn: parsed.name,
+                    servingEn: parsed.serving || '1 serving',
+                    servingBn: parsed.serving || '১ পরিবেশন',
+                    calories: Number(parsed.calories) || 180,
+                    protein: Number(parsed.protein) || 6,
+                    carbs: Number(parsed.carbs) || 24,
+                    fat: Number(parsed.fat) || 5
+                  }, getAutoMealByTime(), 1);
+                  coachHistory[coachHistory.length - 1] = {
+                    role: 'ai',
+                    text: state.lang === 'bn'
+                      ? '✅ অটো যোগ করা হয়েছে: ' + parsed.name + ' (' + (parsed.calories || 180) + ' kcal)'
+                      : '✅ Auto-logged: ' + parsed.name + ' (' + (parsed.calories || 180) + ' kcal)'
+                  };
+                  renderCoachMessages();
+                  return;
+                }
+              } catch (e) {}
+            }
+            handleCoachSend(transcript);
+          };
+          rec.onerror = function () { micBtn.classList.remove('mic-listening', 'bg-emerald-600', 'text-white'); };
+          rec.onend = function () { micBtn.classList.remove('mic-listening', 'bg-emerald-600', 'text-white'); };
+          rec.start();
+        });
+      })();
 
       // Initial render & Firebase init (show Login Screen unless user previously chose Guest or is logged in)
       renderAll();
