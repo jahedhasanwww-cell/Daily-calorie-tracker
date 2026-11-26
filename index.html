@@ -336,7 +336,13 @@
       100% { transform: scale(1); opacity: 1; }
     }
     .water-wave-svg { animation: waterWaveMove 2.6s linear infinite; }
+    .water-wave-svg-back { animation: waterWaveMove 4.2s linear infinite reverse; opacity: 0.55; }
     .water-pop { animation: waterSplashPop 0.42s ease-out; }
+    button { transition: transform 0.14s ease, background-color 0.16s ease, box-shadow 0.16s ease; }
+    button:active { transform: scale(0.96); }
+    .dark .bg-slate-900 { background-color: #1a1a24 !important; }
+    .dark .text-slate-400 { color: #cbd5e1 !important; }
+    .dark .text-slate-500 { color: #94a3b8 !important; }
     @keyframes micPulseRing {
       0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
       70% { transform: scale(1.04); box-shadow: 0 0 0 18px rgba(16, 185, 129, 0); }
@@ -530,132 +536,137 @@
 
     <!-- ==================== TAB 1: TODAY ==================== -->
     <section id="view-today" class="space-y-4 animate-in">
-      <!-- Compact Date Pill Bar -->
-      <div class="flex items-center justify-between bg-white/85 dark:bg-slate-900/85 backdrop-blur-md rounded-2xl px-2 py-1.5 border border-slate-200/80 dark:border-slate-800 shadow-sm">
-        <button id="btn-prev-date" type="button" class="w-9 h-9 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-90 transition" aria-label="Previous day">
+      <!-- Refined Date Bar & Minimal Status Pills -->
+      <div class="flex items-center justify-between bg-white/95 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl px-2.5 py-2 border border-white/70 dark:border-slate-800 shadow-[0_6px_24px_rgba(15,23,42,0.05)]">
+        <button id="btn-prev-date" type="button" class="w-9 h-9 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Previous day">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-        <div class="flex items-center gap-2 flex-wrap justify-center">
-          <span id="current-date-label" class="text-sm font-extrabold tracking-tight text-slate-800 dark:text-slate-100"></span>
-          <span id="streak-badge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300">🔥 0</span>
-          <span id="level-pill-today" class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-indigo-100 text-indigo-700 dark:bg-indigo-900/60 dark:text-indigo-300">⭐ Lv.1</span>
-          <button id="btn-jump-today" type="button" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"></button>
+        <div class="flex flex-col items-center gap-1.5">
+          <span id="current-date-label" class="text-[15px] font-extrabold tracking-tight text-slate-900 dark:text-white leading-none"></span>
+          <div class="flex items-center gap-2.5 flex-wrap justify-center">
+            <span id="streak-badge" class="hidden px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200/70 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800/60">🔥 0</span>
+            <span id="level-pill-today" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-violet-50 text-violet-700 border border-violet-200/70 dark:bg-violet-950/60 dark:text-violet-300 dark:border-violet-800/60">⭐ Lv.1</span>
+            <button id="btn-jump-today" type="button" class="hidden px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/70 dark:bg-indigo-950/60 dark:text-indigo-300"></button>
+          </div>
         </div>
-        <button id="btn-next-date" type="button" class="w-9 h-9 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-90 transition" aria-label="Next day">
+        <button id="btn-next-date" type="button" class="w-9 h-9 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Next day">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
 
-      <!-- Yazio/Lifesum-Style Symmetric Hero Calorie Dashboard -->
-      <div class="hero-glow pro-card rounded-[28px] p-5 border border-emerald-200/70 dark:border-emerald-800/40 space-y-5">
-        <!-- Top Goal Pill & Over-Limit Alert -->
+      <!-- Premium Floating Hero Calorie Dashboard -->
+      <div class="hero-glow pro-card bg-white/95 dark:bg-slate-900 rounded-[28px] p-5 border border-white/70 dark:border-slate-700/60 shadow-[0_10px_34px_rgba(15,23,42,0.08)] space-y-5">
+        <!-- Top Goal Pill & Share/Copy -->
         <div class="flex items-center justify-between gap-2">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 text-[11px] font-bold text-slate-600 dark:text-slate-300">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700 text-[11px] font-bold text-slate-600 dark:text-slate-200">
             <span>🎯</span>
             <span id="lbl-daily-goal">দৈনিক লক্ষ্য</span>:
             <span id="stat-goal" class="text-slate-900 dark:text-white font-extrabold">2000</span>
             <span>kcal</span>
           </span>
           <div class="flex items-center gap-1.5">
-            <button id="btn-open-share-card" type="button" class="px-2.5 py-1 rounded-full bg-emerald-600 hover:bg-emerald-700 text-[11px] font-bold text-white shadow-sm active:scale-95 transition">🖼️ শেয়ার</button>
-            <button id="btn-copy-summary" type="button" class="px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-[11px] font-bold text-emerald-700 dark:text-emerald-300 transition">📋 কপি</button>
+            <button id="btn-open-share-card" type="button" class="px-2.5 py-1 rounded-full bg-violet-600 hover:bg-violet-700 text-[11px] font-bold text-white shadow-sm transition">🖼️ শেয়ার</button>
+            <button id="btn-copy-summary" type="button" class="px-2.5 py-1 rounded-full bg-indigo-500/10 hover:bg-indigo-500/20 text-[11px] font-bold text-indigo-700 dark:text-indigo-300 transition">📋 কপি</button>
           </div>
         </div>
 
-        <!-- Symmetric 3-Column Ring Row: [Eaten] — [Center Ring: Remaining] — [Burned] -->
-        <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-          <!-- Left: Eaten -->
-          <div class="text-center space-y-0.5">
-            <p id="lbl-eaten-col" class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">খাওয়া</p>
-            <p id="stat-eaten-val" class="text-lg font-extrabold text-slate-900 dark:text-white leading-tight">0</p>
-            <p class="text-[10px] font-medium text-slate-400">kcal</p>
-          </div>
-
-          <!-- Center: Large Glowing Gradient Ring -->
-          <div class="relative flex items-center justify-center" style="width:146px;height:146px;">
+        <!-- Centered Full 360-Degree Sleek Gradient Ring -->
+        <div class="flex flex-col items-center gap-4">
+          <div class="relative flex items-center justify-center" style="width:166px;height:166px;">
             <svg class="w-full h-full -rotate-90" viewBox="0 0 120 120">
               <defs>
                 <linearGradient id="ringGradOk" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop id="ring-stop-1" offset="0%" stop-color="#34d399"/>
-                  <stop id="ring-stop-2" offset="100%" stop-color="#059669"/>
+                  <stop id="ring-stop-1" offset="0%" stop-color="#8b5cf6"/>
+                  <stop id="ring-stop-2" offset="100%" stop-color="#2563eb"/>
                 </linearGradient>
                 <linearGradient id="ringGradOver" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="#fb7185"/>
                   <stop offset="100%" stop-color="#e11d48"/>
                 </linearGradient>
               </defs>
-              <circle cx="60" cy="60" r="50" fill="none" stroke-width="9.5" class="stroke-slate-200/75 dark:stroke-slate-800"/>
-              <circle id="calorie-ring" cx="60" cy="60" r="50" fill="none" stroke-width="10" stroke-linecap="round" stroke="url(#ringGradOk)" stroke-dasharray="314.16" stroke-dashoffset="314.16" class="ring-progress"/>
+              <circle cx="60" cy="60" r="51" fill="none" stroke-width="8" class="stroke-slate-200/80 dark:stroke-slate-800"/>
+              <circle id="calorie-ring" cx="60" cy="60" r="51" fill="none" stroke-width="8" stroke-linecap="round" stroke="url(#ringGradOk)" stroke-dasharray="320.44" stroke-dashoffset="320.44" class="ring-progress"/>
             </svg>
             <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-2">
-              <span id="stat-remaining" class="text-[28px] font-extrabold tracking-tight leading-none text-emerald-700 dark:text-emerald-300">2000</span>
-              <span id="lbl-remaining" class="text-[11px] font-bold text-slate-500 dark:text-slate-400 mt-1">বাকি আছে</span>
+              <span id="stat-remaining" class="text-[36px] font-black tracking-tight leading-none text-slate-900 dark:text-white">2000</span>
+              <span id="lbl-remaining" class="text-xs font-bold text-violet-600 dark:text-violet-300 mt-1.5">বাকি আছে</span>
               <span class="hidden" id="ring-consumed">0</span>
               <span class="hidden" id="ring-kcal-unit">ক্যালরি</span>
             </div>
           </div>
 
-          <!-- Right: Burned -->
-          <div class="text-center space-y-0.5">
-            <p id="lbl-burned-col" class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">বার্ন</p>
-            <p id="stat-burned-val" class="text-lg font-extrabold text-orange-600 dark:text-orange-400 leading-tight">0</p>
-            <p id="stat-burned-inline" class="text-[10px] font-medium text-slate-400">kcal</p>
+          <!-- Compact Eaten & Burned Mini Stat Cards Directly Below Ring -->
+          <div class="grid grid-cols-2 gap-2.5 w-full">
+            <div class="rounded-2xl bg-indigo-50/80 dark:bg-indigo-950/35 border border-indigo-100/90 dark:border-indigo-900/50 px-3.5 py-2.5 flex items-center justify-between">
+              <div>
+                <p id="lbl-eaten-col" class="text-[11px] font-bold text-indigo-600 dark:text-indigo-300">খাওয়া</p>
+                <p class="text-base font-extrabold text-slate-900 dark:text-white leading-tight mt-0.5"><span id="stat-eaten-val">0</span> <span class="text-[10px] font-semibold text-slate-400">kcal</span></p>
+              </div>
+              <span class="w-8 h-8 rounded-xl bg-white/80 dark:bg-slate-800/80 flex items-center justify-center text-sm shadow-sm">🍽️</span>
+            </div>
+            <div class="rounded-2xl bg-violet-50/80 dark:bg-violet-950/35 border border-violet-100/90 dark:border-violet-900/50 px-3.5 py-2.5 flex items-center justify-between">
+              <div>
+                <p id="lbl-burned-col" class="text-[11px] font-bold text-violet-600 dark:text-violet-300">বার্ন</p>
+                <p class="text-base font-extrabold text-slate-900 dark:text-white leading-tight mt-0.5"><span id="stat-burned-val">0</span> <span id="stat-burned-inline" class="text-[10px] font-semibold text-slate-400">kcal</span></p>
+              </div>
+              <span class="w-8 h-8 rounded-xl bg-white/80 dark:bg-slate-800/80 flex items-center justify-center text-sm shadow-sm">🔥</span>
+            </div>
           </div>
         </div>
 
         <div id="over-limit-banner" class="hidden text-center text-xs font-semibold px-3 py-2 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 border border-rose-200 dark:border-rose-800"></div>
 
-        <!-- Sleek 3-Column Macro Pills -->
+        <!-- Tinted 3-Column Macro Cards with Thicker Progress Bars -->
         <div class="grid grid-cols-3 gap-2.5 pt-3 border-t border-slate-200/70 dark:border-slate-800/80">
-          <div class="rounded-2xl bg-white/75 dark:bg-slate-900/60 p-2.5 border border-slate-200/60 dark:border-slate-800/80">
-            <div class="flex items-center justify-between text-[11px] mb-1.5">
-              <span id="lbl-protein" class="font-bold text-slate-700 dark:text-slate-200">প্রোটিন</span>
+          <div class="rounded-2xl bg-blue-50/85 dark:bg-blue-950/35 p-3 border border-blue-100 dark:border-blue-900/50">
+            <div class="flex items-center justify-between text-xs mb-2">
+              <span id="lbl-protein" class="font-extrabold text-blue-900 dark:text-blue-200">প্রোটিন</span>
               <span class="w-2 h-2 rounded-full bg-blue-500"></span>
             </div>
-            <div class="h-1.5 rounded-full bg-slate-200/80 dark:bg-slate-800 overflow-hidden mb-1">
-              <div id="bar-protein" class="h-full rounded-full bg-gradient-to-r from-blue-400 to-blue-600 bar-fill" style="width: 0%"></div>
+            <div class="h-2.5 rounded-full bg-blue-200/70 dark:bg-slate-800 overflow-hidden mb-1.5">
+              <div id="bar-protein" class="h-full rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 bar-fill" style="width: 0%"></div>
             </div>
-            <p id="val-protein" class="text-[11px] font-extrabold text-blue-600 dark:text-blue-400">0/100g</p>
+            <p id="val-protein" class="text-xs font-extrabold text-blue-700 dark:text-blue-300">0/100g</p>
           </div>
-          <div class="rounded-2xl bg-white/75 dark:bg-slate-900/60 p-2.5 border border-slate-200/60 dark:border-slate-800/80">
-            <div class="flex items-center justify-between text-[11px] mb-1.5">
-              <span id="lbl-carbs" class="font-bold text-slate-700 dark:text-slate-200">কার্বস</span>
+          <div class="rounded-2xl bg-amber-50/85 dark:bg-amber-950/35 p-3 border border-amber-100 dark:border-amber-900/50">
+            <div class="flex items-center justify-between text-xs mb-2">
+              <span id="lbl-carbs" class="font-extrabold text-amber-900 dark:text-amber-200">কার্বস</span>
               <span class="w-2 h-2 rounded-full bg-amber-500"></span>
             </div>
-            <div class="h-1.5 rounded-full bg-slate-200/80 dark:bg-slate-800 overflow-hidden mb-1">
-              <div id="bar-carbs" class="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500 bar-fill" style="width: 0%"></div>
+            <div class="h-2.5 rounded-full bg-amber-200/70 dark:bg-slate-800 overflow-hidden mb-1.5">
+              <div id="bar-carbs" class="h-full rounded-full bg-gradient-to-r from-amber-400 to-orange-500 bar-fill" style="width: 0%"></div>
             </div>
-            <p id="val-carbs" class="text-[11px] font-extrabold text-amber-600 dark:text-amber-400">0/250g</p>
+            <p id="val-carbs" class="text-xs font-extrabold text-amber-700 dark:text-amber-300">0/250g</p>
           </div>
-          <div class="rounded-2xl bg-white/75 dark:bg-slate-900/60 p-2.5 border border-slate-200/60 dark:border-slate-800/80">
-            <div class="flex items-center justify-between text-[11px] mb-1.5">
-              <span id="lbl-fat" class="font-bold text-slate-700 dark:text-slate-200">ফ্যাট</span>
+          <div class="rounded-2xl bg-rose-50/85 dark:bg-rose-950/35 p-3 border border-rose-100 dark:border-rose-900/50">
+            <div class="flex items-center justify-between text-xs mb-2">
+              <span id="lbl-fat" class="font-extrabold text-rose-900 dark:text-rose-200">ফ্যাট</span>
               <span class="w-2 h-2 rounded-full bg-rose-500"></span>
             </div>
-            <div class="h-1.5 rounded-full bg-slate-200/80 dark:bg-slate-800 overflow-hidden mb-1">
-              <div id="bar-fat" class="h-full rounded-full bg-gradient-to-r from-rose-400 to-rose-600 bar-fill" style="width: 0%"></div>
+            <div class="h-2.5 rounded-full bg-rose-200/70 dark:bg-slate-800 overflow-hidden mb-1.5">
+              <div id="bar-fat" class="h-full rounded-full bg-gradient-to-r from-rose-400 to-pink-600 bar-fill" style="width: 0%"></div>
             </div>
-            <p id="val-fat" class="text-[11px] font-extrabold text-rose-600 dark:text-rose-400">0/65g</p>
+            <p id="val-fat" class="text-xs font-extrabold text-rose-700 dark:text-rose-300">0/65g</p>
           </div>
         </div>
       </div>
 
-      <!-- Compact AI Camera Scan Bar -->
-      <div id="cam-cta-bar" class="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 rounded-2xl px-4 py-3 text-white shadow-md flex items-center justify-between gap-3">
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center shrink-0 text-lg">📷</div>
+      <!-- Sleek AI Food Scan & Voice Action Bar -->
+      <div id="cam-cta-bar" class="bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 rounded-2xl px-4 py-3 text-white shadow-lg shadow-indigo-600/20 flex items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md border border-white/25 flex items-center justify-center shrink-0 text-lg">✨</div>
           <div class="min-w-0">
-            <h2 id="lbl-cam-cta-title" class="text-xs font-extrabold leading-snug truncate">ছবি তুলে ক্যালরি হিসাব করুন</h2>
-            <p id="lbl-cam-cta-sub" class="text-[10px] text-emerald-100/90 truncate">ক্যামেরা বা গ্যালারি থেকে অটো ক্যালরি ও ম্যাক্রো</p>
+            <h2 id="lbl-cam-cta-title" class="text-xs font-extrabold leading-snug truncate">AI ফুড স্ক্যান</h2>
+            <p id="lbl-cam-cta-sub" class="text-[10px] text-indigo-100/95 truncate">ক্যামেরা বা ভয়েসে অটো ক্যালরি</p>
           </div>
         </div>
-        <div class="flex items-center gap-1.5 shrink-0">
-          <button id="btn-voice-today" type="button" aria-label="Voice Input" class="px-2.5 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-xs backdrop-blur-sm border border-white/25 active:scale-95 transition flex items-center gap-1">
+        <div class="flex items-center gap-1.5 shrink-0 p-1 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25">
+          <button id="btn-voice-today" type="button" aria-label="Voice Input" class="px-2.5 py-1.5 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-xs transition flex items-center gap-1">
             <span>🎤</span>
             <span id="lbl-voice-btn">ভয়েস</span>
           </button>
-          <button id="btn-camera-today" type="button" class="px-3 py-2 rounded-xl bg-white text-emerald-700 font-extrabold text-xs shadow-sm hover:bg-emerald-50 active:scale-95 transition flex items-center gap-1.5">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          <button id="btn-camera-today" type="button" class="px-3 py-1.5 rounded-xl bg-white text-violet-700 font-extrabold text-xs shadow-sm hover:bg-violet-50 transition flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
             <span id="lbl-cam-btn-today">ক্যামেরা</span>
           </button>
         </div>
@@ -693,19 +704,32 @@
         <div id="quick-add-strip" class="flex gap-2 overflow-x-auto no-scrollbar pb-1"></div>
       </div>
 
+      <!-- AI Meal Planner Card (Remaining Calories -> Instant Diet Plan) -->
+      <div class="pro-card bg-white dark:bg-slate-900 rounded-3xl p-4 border border-slate-200/80 dark:border-slate-800 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white">🍱 AI মিল প্ল্যানার (Meal Planner)</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">আজকের বাকি ক্যালরি ও প্রোটিন অনুযায়ী পারফেক্ট খাবারের তালিকা</p>
+          </div>
+          <button id="btn-gen-meal-plan" type="button" class="shrink-0 px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-[11px] font-extrabold shadow-sm transition">✨ প্ল্যান বানান</button>
+        </div>
+        <div id="ai-meal-plan-result" class="hidden rounded-2xl p-3 bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200/70 dark:border-emerald-800/60 text-xs leading-relaxed text-slate-800 dark:text-slate-100 whitespace-pre-line"></div>
+      </div>
+
       <!-- SECTION C: HEALTH WIDGETS (Water + Exercise Burned) -->
       <div class="space-y-3">
         <!-- Water Tracker Widget -->
         <div class="pro-card bg-white dark:bg-slate-900 rounded-3xl p-4 border border-slate-200/80 dark:border-slate-800">
           <div class="flex items-center justify-between gap-3">
             <div class="flex items-center gap-3 min-w-0">
-              <div id="water-bottle-box" class="relative w-12 h-14 rounded-2xl bg-sky-50 dark:bg-sky-950/60 border-2 border-sky-300/90 dark:border-sky-700 overflow-hidden shrink-0 flex items-end justify-center shadow-inner">
+              <div id="water-bottle-box" class="relative w-16 h-16 rounded-full bg-sky-50 dark:bg-sky-950/70 border-2 border-sky-400/90 dark:border-sky-500/70 overflow-hidden shrink-0 flex items-end justify-center shadow-inner">
                 <div id="water-bottle-fill" class="w-full bg-gradient-to-t from-sky-600 via-sky-500 to-cyan-400 transition-all duration-500 relative" style="height: 0%;">
-                  <svg class="water-wave-svg absolute -top-2 left-0 w-[200%] h-2.5 text-cyan-400" viewBox="0 0 120 12" preserveAspectRatio="none"><path fill="currentColor" d="M0 6 Q 15 0 30 6 T 60 6 T 90 6 T 120 6 L 120 12 L 0 12 Z"/></svg>
-                  <span class="water-bubble absolute bottom-1 left-2 w-1.5 h-1.5 rounded-full bg-white/70"></span>
-                  <span class="water-bubble-2 absolute bottom-1 right-2 w-1 h-1 rounded-full bg-white/60"></span>
+                  <svg class="water-wave-svg-back absolute -top-2.5 left-0 w-[200%] h-3 text-sky-300" viewBox="0 0 120 12" preserveAspectRatio="none"><path fill="currentColor" d="M0 6 Q 15 0 30 6 T 60 6 T 90 6 T 120 6 L 120 12 L 0 12 Z"/></svg>
+                  <svg class="water-wave-svg absolute -top-2 left-0 w-[200%] h-3 text-cyan-400" viewBox="0 0 120 12" preserveAspectRatio="none"><path fill="currentColor" d="M0 6 Q 15 12 30 6 T 60 6 T 90 6 T 120 6 L 120 12 L 0 12 Z"/></svg>
+                  <span class="water-bubble absolute bottom-1.5 left-3 w-1.5 h-1.5 rounded-full bg-white/75"></span>
+                  <span class="water-bubble-2 absolute bottom-1 right-3.5 w-1 h-1 rounded-full bg-white/65"></span>
                 </div>
-                <span id="water-bottle-pct" class="absolute inset-0 flex items-center justify-center text-[10px] font-extrabold text-sky-950 dark:text-white drop-shadow">0%</span>
+                <span id="water-bottle-pct" class="absolute inset-0 flex items-center justify-center text-[11px] font-extrabold text-sky-950 dark:text-white drop-shadow">0%</span>
               </div>
               <div class="min-w-0">
                 <p id="lbl-water-title" class="text-sm font-bold text-slate-900 dark:text-white">পানি পান</p>
@@ -976,6 +1000,13 @@
         <div class="h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
           <div id="level-xp-bar" class="h-full rounded-full bg-gradient-to-r from-indigo-500 via-emerald-500 to-amber-400 bar-fill" style="width: 10%"></div>
         </div>
+        <div class="flex items-center justify-between gap-2 p-2.5 rounded-2xl bg-sky-50/80 dark:bg-sky-950/40 border border-sky-200/70 dark:border-sky-800/60">
+          <div class="min-w-0">
+            <p class="text-xs font-bold text-sky-900 dark:text-sky-200">❄️ স্ট্রিক ফ্রিজ (Streak Saver)</p>
+            <p id="streak-freeze-sub" class="text-[10px] text-sky-700 dark:text-sky-300">কোনো দিন মিস করলে ৫০ XP দিয়ে স্ট্রিক রক্ষা করুন</p>
+          </div>
+          <button id="btn-streak-freeze" type="button" class="shrink-0 px-3 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-[11px] font-extrabold shadow-sm transition">❄️ ফ্রিজ (50 XP)</button>
+        </div>
         <div id="badges-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
       </div>
 
@@ -1164,6 +1195,15 @@
             <span>Telegram</span>
           </button>
         </div>
+      </div>
+
+      <!-- Data Privacy Policy & Security Card -->
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <h2 class="text-sm font-bold text-slate-900 dark:text-white">🛡️ ডেটা প্রাইভেসি ও নিরাপত্তা</h2>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">আপনার খাবার, ওজন ও API কী কীভাবে সুরক্ষিত থাকে তা জানুন।</p>
+        </div>
+        <button id="btn-open-privacy" type="button" class="shrink-0 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/60 text-slate-800 dark:text-slate-100 text-xs font-bold transition">পলিসি দেখুন</button>
       </div>
 
       <!-- Powered by Footer -->
@@ -1562,7 +1602,7 @@
   </div>
 
   <!-- Compact Draggable Floating AI Coach Icon Button (Bottom-Right above Nav) -->
-  <button id="btn-ai-coach-fab" type="button" aria-label="AI Nutrition Coach" title="AI কোচ (টেনে সরাতে পারবেন)" class="fixed bottom-24 right-3.5 z-[45] w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 via-teal-600 to-indigo-600 text-white shadow-lg shadow-slate-900/30 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform border-2 border-white/80 dark:border-slate-800 select-none" style="touch-action: none;">
+  <button id="btn-ai-coach-fab" type="button" aria-label="AI Nutrition Coach" title="AI কোচ (টেনে সরাতে পারবেন)" class="fixed bottom-20 right-3 z-[45] w-11 h-11 rounded-full bg-gradient-to-br from-violet-600 via-indigo-600 to-blue-600 text-white shadow-lg shadow-slate-900/30 flex items-center justify-center hover:scale-105 active:scale-95 transition-transform border-2 border-white/80 dark:border-slate-800 select-none" style="touch-action: none;">
     <span class="text-xl leading-none pointer-events-none">🤖</span>
   </button>
 
@@ -1612,6 +1652,23 @@
 
   <!-- Confetti Celebration Canvas -->
   <canvas id="confetti-canvas" class="pointer-events-none fixed inset-0 z-[70] w-full h-full hidden"></canvas>
+
+  <!-- Data Privacy Policy Modal -->
+  <div id="privacy-policy-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-2xl space-y-3.5 max-h-[82vh] overflow-y-auto">
+      <div class="flex items-center justify-between gap-2">
+        <h3 class="text-base font-extrabold text-slate-900 dark:text-white">🛡️ ডেটা প্রাইভেসি ও নিরাপত্তা পলিসি</h3>
+        <button id="btn-close-privacy" type="button" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 font-bold text-xs">✕</button>
+      </div>
+      <div class="space-y-2.5 text-xs leading-relaxed text-slate-700 dark:text-slate-200">
+        <p><strong>১. ব্যক্তিগত ডেটার মালিকানা:</strong> আপনার প্রতিদিনের খাবার, ক্যালরি, ওজন, ছবি ও জার্নাল সম্পূর্ণ আপনার নিজের ডিভাইসে (LocalStorage) এবং লগইন করলে আপনার ব্যক্তিগত Firebase অ্যাকাউন্টে এনক্রিপ্টেড অবস্থায় সংরক্ষিত থাকে।</p>
+        <p><strong>২. প্রাইভেট AI API কী:</strong> আপনার Groq বা Gemini API কী কখনোই পাবলিক সার্ভারে শেয়ার করা হয় না — এটি শুধু আপনার ডিভাইস থেকে সরাসরি অফিশিয়াল AI সার্ভারে অনুরোধ পাঠাতে ব্যবহৃত হয়।</p>
+        <p><strong>৩. অফলাইন ও ব্যাকআপ সুবিধা:</strong> আপনি যেকোনো সময় CSV বা JSON আকারে আপনার সম্পূর্ণ ডেটা ডাউনলোড করতে বা মুছে ফেলতে পারবেন।</p>
+        <p><strong>৪. কোনো তৃতীয় পক্ষের বিজ্ঞাপন নেই:</strong> এই অ্যাপ আপনার স্বাস্থ্য তথ্য কোনো বিজ্ঞাপনদাতা বা তৃতীয় পক্ষের কাছে বিক্রি বা শেয়ার করে না।</p>
+      </div>
+      <button id="btn-ok-privacy" type="button" class="w-full py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold">বুঝেছি</button>
+    </div>
+  </div>
 
   <script>
     (function () {
@@ -2297,9 +2354,12 @@
         if (!todayLog || !todayLog.entries || todayLog.entries.length === 0) {
           checkDate = getLocalDateStr(-1);
         }
+        const frozenSet = Array.isArray(state.frozenDates) ? state.frozenDates : [];
         for (let i = 0; i < 365; i++) {
           const l = state.logsByDate[checkDate];
-          if (l && Array.isArray(l.entries) && l.entries.length > 0) {
+          const hasEntries = l && Array.isArray(l.entries) && l.entries.length > 0;
+          const isFrozen = frozenSet.indexOf(checkDate) !== -1;
+          if (hasEntries || isFrozen) {
             streak++;
             checkDate = shiftDateStr(checkDate, -1);
           } else {
@@ -2393,7 +2453,8 @@
           carbs: Math.round((Number(food.carbs) || 0) * mult * 10) / 10,
           fat: Math.round((Number(food.fat) || 0) * mult * 10) / 10,
           time: timeStr,
-          photo: food.photo || ''
+          photo: food.photo || '',
+          emoji: food.emoji || ''
         };
         day.entries.push(entry);
         saveState();
@@ -2758,7 +2819,7 @@
         const burned = Math.max(0, Number(totals.burned) || 0);
         const netCal = Math.max(0, totals.calories - burned);
         const pct = Math.min(1, netCal / goalCal);
-        const circumference = 314.16;
+        const circumference = 320.44;
         const offset = circumference * (1 - pct);
         const ringEl = document.getElementById('calorie-ring');
         ringEl.style.strokeDashoffset = offset.toFixed(2);
@@ -2779,13 +2840,13 @@
         if (isOver) {
           remLabel.textContent = t('overBy');
           animateCounterEl(remVal, Math.abs(diff), '+', '');
-          remVal.className = 'text-[26px] font-extrabold tracking-tight leading-none text-rose-600 dark:text-rose-400';
+          remVal.className = 'text-[32px] font-black tracking-tight leading-none text-rose-600 dark:text-rose-400';
           overBanner.textContent = t('overWarning').replace('{n}', Math.abs(diff));
           overBanner.classList.remove('hidden');
         } else {
           remLabel.textContent = t('remaining');
           animateCounterEl(remVal, diff, '', '');
-          remVal.className = 'text-[28px] font-extrabold tracking-tight leading-none text-emerald-700 dark:text-emerald-300';
+          remVal.className = 'text-[36px] font-black tracking-tight leading-none text-slate-900 dark:text-white';
           overBanner.classList.add('hidden');
         }
 
@@ -2857,9 +2918,21 @@
                 const nm = state.lang === 'bn' ? item.nameBn : item.nameEn;
                 const srv = state.lang === 'bn' ? item.servingBn : item.servingEn;
                 const qtyTag = item.qty !== 1 ? ' × ' + item.qty : '';
+                const fallbackEmoji = item.emoji || (function () {
+                  const lowN = ((item.nameEn || '') + ' ' + (item.nameBn || '')).toLowerCase();
+                  if (/rice|ভাত|পোলাও|বিরিয়ানি/.test(lowN)) return '🍚';
+                  if (/egg|ডিম/.test(lowN)) return '🥚';
+                  if (/chicken|মুরগি|মাংস|beef|গরু|খাসি/.test(lowN)) return '🍗';
+                  if (/fish|মাছ|ইলিশ|রুই/.test(lowN)) return '🐟';
+                  if (/dal|ডাল/.test(lowN)) return '🥣';
+                  if (/roti|রুটি|পরোটা|bread|পাউরুটি/.test(lowN)) return '🫓';
+                  if (/tea|চা|coffee|কফি|milk|দুধ/.test(lowN)) return '☕';
+                  if (/banana|কলা|apple|আপেল|fruit|ফল|mango|আম/.test(lowN)) return '🍎';
+                  return '🍽️';
+                })();
                 const thumbHtml = item.photo
                   ? '<button type="button" data-view-photo="' + item.id + '" class="w-10 h-10 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shrink-0 shadow-sm"><img src="' + item.photo + '" loading="lazy" alt="" class="w-full h-full object-cover"></button>'
-                  : '';
+                  : '<span class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200/70 dark:border-slate-700/70 flex items-center justify-center text-base leading-none shrink-0">' + fallbackEmoji + '</span>';
                 return '<div data-swipe-entry="' + item.id + '" class="meal-swipe-row py-2.5 border-t border-slate-100 dark:border-slate-800/80 space-y-1.5 rounded-xl px-1">' +
                   '<div class="flex items-start justify-between gap-2">' +
                     thumbHtml +
@@ -5728,7 +5801,8 @@
           }
         });
         const todayWater = (getDayTotals(getLocalDateStr(0)).water) || 0;
-        const xp = (totalMeals * 15) + (streak * 40) + (todayWater >= 8 ? 30 : 0) + (photoCount * 20);
+        const rawXp = (totalMeals * 15) + (streak * 40) + (todayWater >= 8 ? 30 : 0) + (photoCount * 20);
+        const xp = Math.max(0, rawXp - (Number(state.xpSpent) || 0));
         const level = Math.min(20, Math.floor(xp / 150) + 1);
         const pct = Math.min(100, Math.round(((xp % 150) / 150) * 100));
         const ranksBn = ['নতুন শুরু', 'সচেতন', 'নিয়মিত ট্র্যাকার', 'হেলথ চ্যাম্পিয়ন', 'ফিটনেস যোদ্ধা', 'ক্যালরি মাস্টার'];
@@ -5939,68 +6013,69 @@
         const goalPro = Number(state.goals.protein) || 100;
         const remCal = Math.round(goalCal - totals.calories);
         const remPro = Math.max(0, Math.round(goalPro - totals.protein));
-        const sysPrompt = 'You are a warm, practical Bangladeshi/South Asian nutrition coach. Answer concisely in ' +
+        const fullPrompt = 'You are a warm, practical Bangladeshi/South Asian nutrition coach. Answer concisely in ' +
           (state.lang === 'bn' ? 'natural Bangla' : 'English') +
-          ' (3-5 short lines). User stats today: Eaten ' + Math.round(totals.calories) + '/' + goalCal +
+          ' (3-5 short lines, plain text without markdown asterisks). User stats today: Eaten ' + Math.round(totals.calories) + '/' + goalCal +
           ' kcal (Remaining ' + remCal + ' kcal), Protein ' + Math.round(totals.protein) + '/' + goalPro +
-          'g, Carbs ' + Math.round(totals.carbs) + 'g, Fat ' + Math.round(totals.fat) + 'g, Water ' + (totals.water || 0) + '/8 glasses.';
+          'g, Carbs ' + Math.round(totals.carbs) + 'g, Fat ' + Math.round(totals.fat) + 'g, Water ' + (totals.water || 0) + '/8 glasses.' +
+          '\n\nUser question: ' + question;
 
-        const groqKey = typeof normalizeGroqKey === 'function' ? normalizeGroqKey(state.groqApiKey) : (state.groqApiKey || '').trim();
-        if (groqKey) {
+        const rawGroq = (state.groqApiKey || (document.getElementById('input-groq-key') || {}).value || '').trim();
+        const groqKey = typeof normalizeGroqKey === 'function' ? normalizeGroqKey(rawGroq) : rawGroq;
+        const gemKey = (state.geminiApiKey || (document.getElementById('input-gemini-key') || {}).value || '').trim();
+        const hasAnyKey = Boolean(groqKey || gemKey);
+        let apiErrNote = '';
+
+        // 1. Use dynamic Groq model discovery (same proven engine as camera & voice)
+        if (groqKey && typeof callGroqVision === 'function') {
           try {
-            const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + groqKey },
-              body: JSON.stringify({
-                model: 'llama-3.3-70b-versatile',
-                messages: [
-                  { role: 'system', content: sysPrompt },
-                  { role: 'user', content: question }
-                ],
-                temperature: 0.5,
-                max_tokens: 320
-              })
-            });
-            if (resp.ok) {
-              const data = await resp.json();
-              const txt = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-              if (txt) return txt.trim();
+            const gRes = await callGroqVision(groqKey, fullPrompt, null);
+            if (gRes && gRes.text && gRes.text.trim()) {
+              return gRes.text.trim();
             }
-          } catch (e) {}
+          } catch (e) {
+            apiErrNote = (e && e.message) ? e.message : 'Groq error';
+          }
         }
 
-        const gemKey = (state.geminiApiKey || '').trim();
-        if (gemKey) {
+        // 2. Use dynamic Gemini fallback engine (same proven engine as camera & voice)
+        if (gemKey && typeof callGeminiWithFallback === 'function') {
           try {
-            const resp = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + encodeURIComponent(gemKey), {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                contents: [{ parts: [{ text: sysPrompt + '\n\nUser question: ' + question }] }]
-              })
-            });
-            if (resp.ok) {
-              const data = await resp.json();
-              const txt = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text;
-              if (txt) return txt.trim();
+            const jRes = await callGeminiWithFallback(gemKey, [{ text: fullPrompt }]);
+            const txt = jRes && jRes.json && jRes.json.candidates && jRes.json.candidates[0] &&
+              jRes.json.candidates[0].content && jRes.json.candidates[0].content.parts &&
+              jRes.json.candidates[0].content.parts[0] && jRes.json.candidates[0].content.parts[0].text;
+            if (txt && txt.trim()) {
+              return txt.trim();
             }
-          } catch (e) {}
+          } catch (e) {
+            const m = (e && e.message) ? e.message : 'Gemini error';
+            apiErrNote = apiErrNote ? (apiErrNote + ' / ' + m) : m;
+          }
         }
+
+        const tailNote = hasAnyKey
+          ? (state.lang === 'bn'
+              ? ' (বি.দ্র.: এই মুহূর্তে লাইভ AI সার্ভার থেকে উত্তর আসেনি — ' + (apiErrNote ? apiErrNote.slice(0, 60) : 'ইন্টারনেট/কী চেক করুন') + '।)'
+              : ' (Note: Live AI unreachable right now — ' + (apiErrNote ? apiErrNote.slice(0, 60) : 'check connection/key') + '.)')
+          : (state.lang === 'bn'
+              ? ' (আরও বিস্তারিত AI উত্তরের জন্য সেটিংসে ফ্রি Groq বা Gemini কী বসাতে পারেন।)'
+              : ' (Add a free Groq or Gemini key in Settings for live AI coaching.)');
 
         const q = question.toLowerCase();
         if (q.includes('প্রোটিন') || q.includes('protein')) {
-          return state.lang === 'bn'
-            ? 'আজ আপনার প্রোটিন এখনো ' + remPro + 'g বাকি আছে। সহজে পূরণ করতে ২টি সেদ্ধ ডিম (১২g), ১ পিস গ্রিল্ড চিকেন বা মাছ (২২-২৫g) অথবা ১ বাটি ঘন মসুর ডাল (৯g) খেতে পারেন। (আরও বিস্তারিত AI উত্তরের জন্য সেটিংসে ফ্রি Groq বা Gemini কী বসাতে পারেন।)'
-            : 'You still need ' + remPro + 'g of protein today. Quick options: 2 boiled eggs (12g), grilled chicken/fish (22-25g), or thick dal (9g). Add a free Groq/Gemini key in Settings for full AI coaching.';
+          return (state.lang === 'bn'
+            ? 'আজ আপনার প্রোটিন এখনো ' + remPro + 'g বাকি আছে। সহজে পূরণ করতে ২টি সেদ্ধ ডিম (১২g), ১ পিস গ্রিল্ড চিকেন বা মাছ (২২-২৫g) অথবা ১ বাটি ঘন মসুর ডাল (৯g) খেতে পারেন।'
+            : 'You still need ' + remPro + 'g of protein today. Quick options: 2 boiled eggs (12g), grilled chicken/fish (22-25g), or thick dal (9g).') + tailNote;
         }
         if (q.includes('ওজন') || q.includes('কমা') || q.includes('খাবো') || q.includes('eat') || q.includes('weight')) {
-          return state.lang === 'bn'
+          return (state.lang === 'bn'
             ? 'আপনার আজ ' + Math.max(0, remCal) + ' kcal বাকি আছে। ওজন নিয়ন্ত্রণে রাখতে ভাত একটু কমিয়ে (১ কাপ) সাথে মাছ/মুরগি, শাকসবজি ও শসার সালাদ নিন এবং মিষ্টি পানীয় এড়িয়ে চলুন।'
-            : 'You have ' + Math.max(0, remCal) + ' kcal left today. For weight loss, stick to a smaller rice portion with fish/chicken, leafy veggies, cucumber salad, and skip sugary drinks.';
+            : 'You have ' + Math.max(0, remCal) + ' kcal left today. For weight loss, stick to a smaller rice portion with fish/chicken, leafy veggies, cucumber salad, and skip sugary drinks.') + tailNote;
         }
-        return state.lang === 'bn'
+        return (state.lang === 'bn'
           ? 'আজকের স্ট্যাটাস: ' + Math.round(totals.calories) + '/' + goalCal + ' kcal (বাকি ' + remCal + ' kcal), প্রোটিন ' + Math.round(totals.protein) + 'g, পানি ' + (totals.water || 0) + '/8 গ্লাস। ' + (remPro > 20 ? 'পরের মিলে ডিম, মাছ বা ডাল যোগ করলে ব্যালেন্স দারুণ হবে!' : 'আপনার আজকের ব্যালেন্স ভালো যাচ্ছে — পর্যাপ্ত পানি পান করুন!')
-          : 'Today: ' + Math.round(totals.calories) + '/' + goalCal + ' kcal (' + remCal + ' kcal left), Protein ' + Math.round(totals.protein) + 'g, Water ' + (totals.water || 0) + '/8. Keep hydrating and prioritize lean protein!';
+          : 'Today: ' + Math.round(totals.calories) + '/' + goalCal + ' kcal (' + remCal + ' kcal left), Protein ' + Math.round(totals.protein) + 'g, Water ' + (totals.water || 0) + '/8. Keep hydrating and prioritize lean protein!') + tailNote;
       }
 
       function openAiCoachModal() {
@@ -6525,6 +6600,97 @@
           rec.start();
         });
       })();
+
+
+      /* ======================== 9 POLISH UPGRADES (MEAL PLANNER, STREAK FREEZE, PRIVACY, PWA SHORTCUTS, HAPTICS) ======================== */
+      document.getElementById('btn-gen-meal-plan').addEventListener('click', async function () {
+        if (typeof triggerHaptic === 'function') triggerHaptic(40);
+        const out = document.getElementById('ai-meal-plan-result');
+        const btn = document.getElementById('btn-gen-meal-plan');
+        if (!out || !btn) return;
+        out.classList.remove('hidden');
+        btn.disabled = true;
+        out.textContent = state.lang === 'bn' ? '⏳ আপনার বাকি ক্যালরি দেখে আজকের মিল প্ল্যান তৈরি হচ্ছে...' : '⏳ Generating your personalized meal plan...';
+        const totals = getDayTotals(state.selectedDate);
+        const goalCal = Number(state.goals.calories) || 2000;
+        const goalPro = Number(state.goals.protein) || 100;
+        const remCal = Math.max(150, Math.round(goalCal - totals.calories));
+        const proShort = Math.max(0, Math.round(goalPro - totals.protein));
+        const prompt = 'I have ' + remCal + ' kcal left today. My protein goal is short by ' + proShort +
+          'g. Suggest a simple, realistic Bangladeshi 2-meal plan (with approximate calories & protein per meal) in ' +
+          (state.lang === 'bn' ? 'natural Bangla.' : 'English.');
+        const reply = await askAiNutritionCoach(prompt);
+        out.textContent = '🍱 ' + reply;
+        btn.disabled = false;
+      });
+
+      document.getElementById('btn-streak-freeze').addEventListener('click', function () {
+        if (typeof triggerHaptic === 'function') triggerHaptic(40);
+        const g = computeGamificationStats();
+        if (g.xp < 50) {
+          showToast(state.lang === 'bn' ? 'স্ট্রিক ফ্রিজ করতে কমপক্ষে ৫০ XP প্রয়োজন (আপনার আছে ' + g.xp + ' XP)' : 'Need at least 50 XP to freeze streak (you have ' + g.xp + ' XP)');
+          return;
+        }
+        if (!Array.isArray(state.frozenDates)) state.frozenDates = [];
+        const yest = getLocalDateStr(-1);
+        const yLog = state.logsByDate[yest];
+        const targetDate = (!yLog || !yLog.entries || yLog.entries.length === 0) ? yest : getLocalDateStr(0);
+        if (state.frozenDates.indexOf(targetDate) !== -1) {
+          showToast(state.lang === 'bn' ? '❄️ এই দিনটি ইতিমধ্যেই ফ্রিজ করা আছে!' : '❄️ This day is already frozen!');
+          return;
+        }
+        state.frozenDates.push(targetDate);
+        state.xpSpent = (Number(state.xpSpent) || 0) + 50;
+        saveState();
+        renderAll();
+        launchConfetti();
+        showToast(state.lang === 'bn' ? '❄️ স্ট্রিক ফ্রিজ সফল! (' + targetDate + ' সুরক্ষিত, -50 XP)' : '❄️ Streak frozen for ' + targetDate + ' (-50 XP)!');
+      });
+
+      (function initPrivacyModal() {
+        const m = document.getElementById('privacy-policy-modal');
+        const openBtn = document.getElementById('btn-open-privacy');
+        const closeBtn = document.getElementById('btn-close-privacy');
+        const okBtn = document.getElementById('btn-ok-privacy');
+        if (!m || !openBtn) return;
+        function openP() { m.classList.remove('hidden'); m.classList.add('flex'); }
+        function closeP() { m.classList.add('hidden'); m.classList.remove('flex'); }
+        openBtn.addEventListener('click', openP);
+        if (closeBtn) closeBtn.addEventListener('click', closeP);
+        if (okBtn) okBtn.addEventListener('click', closeP);
+        m.addEventListener('click', function (e) { if (e.target === m) closeP(); });
+      })();
+
+      document.addEventListener('click', function (e) {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+        try {
+          if (navigator.vibrate) {
+            const isPrimary = btn.type === 'submit' || /save|add|plus|submit|plan|freeze|confirm/i.test(btn.id || '');
+            navigator.vibrate(isPrimary ? 40 : 15);
+          }
+        } catch (err) {}
+      }, true);
+
+      setTimeout(function () {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const action = params.get('action');
+          if (!action) return;
+          if (action === 'water') {
+            const wp = document.getElementById('btn-water-plus');
+            if (wp) wp.click();
+          } else if (action === 'scan') {
+            const cam = document.getElementById('btn-camera-today');
+            if (cam) cam.click();
+          } else if (action === 'report') {
+            switchTab('reports');
+          }
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+        } catch (e) {}
+      }, 450);
 
       // Initial render & Firebase init (show Login Screen unless user previously chose Guest or is logged in)
       renderAll();
