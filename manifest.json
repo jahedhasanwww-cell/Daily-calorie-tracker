@@ -27,5 +27,46 @@
       "type": "image/svg+xml",
       "purpose": "any"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "পানি যোগ করুন (Add Water)",
+      "short_name": "পানি +১",
+      "description": "এক ক্লিকে ১ গ্লাস পানি যোগ করুন",
+      "url": "./?action=water",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "খাবার স্ক্যান (Scan Food)",
+      "short_name": "স্ক্যান",
+      "description": "ক্যামেরা দিয়ে খাবার স্ক্যান করুন",
+      "url": "./?action=scan",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "রিপোর্ট দেখুন (View Report)",
+      "short_name": "রিপোর্ট",
+      "description": "৭ দিনের ক্যালরি ও ওজন রিপোর্ট দেখুন",
+      "url": "./?action=report",
+      "icons": [
+        {
+          "src": "./icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
   ]
 }

@@ -1,0 +1,317 @@
+* { -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Poppins', 'Inter', 'Hind Siliguri', system-ui, -apple-system, sans-serif;
+      font-variant-numeric: tabular-nums;
+      overscroll-behavior-y: contain;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .ring-progress {
+      transition: stroke-dashoffset 0.65s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.3s ease;
+      filter: drop-shadow(0 4px 10px rgba(16, 185, 129, 0.28));
+    }
+    .bar-fill {
+      transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.45; transform: scale(1); }
+      50% { opacity: 0.72; transform: scale(1.06); }
+    }
+    .animate-in { animation: fadeSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+    @keyframes pageEnterSlide {
+      from { opacity: 0; transform: translateY(14px) scale(0.992); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .page-enter-slide { animation: pageEnterSlide 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
+    .meal-swipe-row { transition: transform 0.18s ease, background-color 0.18s ease; touch-action: pan-y; }
+    @media print {
+      header, nav, #btn-ai-coach-fab, #pwa-install-banner, #btn-export-pdf-report, #btn-gen-ai-insight { display: none !important; }
+      body { background: #ffffff !important; color: #0f172a !important; }
+      main { padding-bottom: 0 !important; max-width: 100% !important; }
+      .pro-card, section > div { break-inside: avoid; box-shadow: none !important; border: 1px solid #cbd5e1 !important; }
+    }
+    .orb-glow { animation: pulseGlow 7s ease-in-out infinite; }
+    .pro-card {
+      box-shadow: 0 6px 22px -6px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+    .dark .pro-card {
+      background-color: #161822;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    @keyframes badgeShine {
+      0% { transform: translateX(-120%) skewX(-20deg); }
+      100% { transform: translateX(220%) skewX(-20deg); }
+    }
+    .badge-shine::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      width: 45%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+      animation: badgeShine 3.2s ease-in-out infinite;
+      pointer-events: none;
+    }
+    /* ========== CRYSTAL WHITE GLASS THEME ========== */
+    body.theme-glass {
+      background:
+        radial-gradient(circle at 14% 12%, rgba(16, 185, 129, 0.48) 0%, transparent 38%),
+        radial-gradient(circle at 86% 16%, rgba(56, 189, 248, 0.50) 0%, transparent 40%),
+        radial-gradient(circle at 22% 76%, rgba(167, 139, 250, 0.34) 0%, transparent 42%),
+        radial-gradient(circle at 82% 84%, rgba(45, 212, 191, 0.44) 0%, transparent 42%),
+        linear-gradient(145deg, #d8f8ee 0%, #dbeafe 48%, #e0f7fa 100%) !important;
+      background-attachment: fixed !important;
+    }
+    body.theme-glass .bg-white,
+    body.theme-glass .hero-glow,
+    body.theme-glass header,
+    body.theme-glass nav {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.56) 0%, rgba(255, 255, 255, 0.26) 100%) !important;
+      backdrop-filter: blur(30px) saturate(210%) !important;
+      -webkit-backdrop-filter: blur(30px) saturate(210%) !important;
+      border-color: rgba(255, 255, 255, 0.80) !important;
+      box-shadow: 0 10px 34px -8px rgba(14, 116, 144, 0.16), inset 0 1.5px 1px rgba(255, 255, 255, 0.92) !important;
+    }
+    body.theme-glass .bg-white\/75,
+    body.theme-glass .bg-white\/85,
+    body.theme-glass .bg-white\/90,
+    body.theme-glass .bg-slate-50 {
+      background: rgba(255, 255, 255, 0.36) !important;
+      backdrop-filter: blur(18px) saturate(180%) !important;
+      -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+      border-color: rgba(255, 255, 255, 0.68) !important;
+    }
+
+    /* ========== LUMINOUS DARK CRYSTAL GLASS THEME ========== */
+    body.theme-dark-glass {
+      background:
+        radial-gradient(circle at 12% 10%, rgba(16, 185, 129, 0.46) 0%, transparent 38%),
+        radial-gradient(circle at 88% 18%, rgba(14, 165, 233, 0.42) 0%, transparent 40%),
+        radial-gradient(circle at 20% 78%, rgba(99, 102, 241, 0.34) 0%, transparent 42%),
+        radial-gradient(circle at 82% 88%, rgba(20, 184, 166, 0.40) 0%, transparent 44%),
+        linear-gradient(155deg, #030712 0%, #091326 50%, #041a1d 100%) !important;
+      background-attachment: fixed !important;
+    }
+    body.theme-dark-glass .dark\:bg-slate-900,
+    body.theme-dark-glass .hero-glow,
+    body.theme-dark-glass header,
+    body.theme-dark-glass nav {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
+      backdrop-filter: blur(30px) saturate(210%) !important;
+      -webkit-backdrop-filter: blur(30px) saturate(210%) !important;
+      border-color: rgba(255, 255, 255, 0.22) !important;
+      box-shadow: 0 12px 38px -8px rgba(0, 0, 0, 0.62), inset 0 1px 1px rgba(255, 255, 255, 0.28) !important;
+    }
+    body.theme-dark-glass .dark\:bg-slate-900\/60,
+    body.theme-dark-glass .dark\:bg-slate-900\/75,
+    body.theme-dark-glass .dark\:bg-slate-900\/85,
+    body.theme-dark-glass .dark\:bg-slate-900\/90,
+    body.theme-dark-glass .dark\:bg-slate-800\/70 {
+      background: rgba(255, 255, 255, 0.08) !important;
+      backdrop-filter: blur(18px) saturate(175%) !important;
+      -webkit-backdrop-filter: blur(18px) saturate(175%) !important;
+      border-color: rgba(255, 255, 255, 0.16) !important;
+    }
+    .login-bg {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(16, 185, 129, 0.45) 0%, transparent 45%),
+        radial-gradient(circle at 84% 78%, rgba(20, 184, 166, 0.35) 0%, transparent 45%),
+        linear-gradient(145deg, #022c22 0%, #0f172a 55%, #020617 100%);
+    }
+    .hero-glow {
+      background: linear-gradient(145deg, rgba(255,255,255,0.92) 0%, rgba(236,253,245,0.88) 100%);
+    }
+    .dark .hero-glow {
+      background: linear-gradient(145deg, rgba(15,23,42,0.86) 0%, rgba(6,78,59,0.28) 100%);
+    }
+    .nav-btn.nav-active .nav-pill {
+      background: rgba(16, 185, 129, 0.14);
+    }
+    .dark .nav-btn.nav-active .nav-pill {
+      background: rgba(16, 185, 129, 0.22);
+    }
+    :root {
+      --acc-400: #34d399;
+      --acc-500: #10b981;
+      --acc-600: #059669;
+      --acc-700: #047857;
+      --acc-soft: rgba(16, 185, 129, 0.14);
+      --acc-on: #ffffff;
+    }
+    body.accent-custom .bg-emerald-600,
+    body.accent-custom .bg-emerald-500 {
+      background-color: var(--acc-600) !important;
+      color: var(--acc-on) !important;
+    }
+    body.accent-custom .hover\:bg-emerald-700:hover {
+      background-color: var(--acc-700) !important;
+    }
+    body.accent-custom .text-emerald-600,
+    body.accent-custom .text-emerald-700,
+    body.accent-custom .dark\:text-emerald-400,
+    body.accent-custom .dark\:text-emerald-300 {
+      color: var(--acc-500) !important;
+    }
+    body.accent-custom .border-emerald-600 {
+      border-color: var(--acc-600) !important;
+    }
+    body.accent-custom .nav-btn.nav-active .nav-pill {
+      background: var(--acc-soft) !important;
+    }
+    body.accent-custom #cam-cta-bar {
+      background: linear-gradient(135deg, var(--acc-600) 0%, var(--acc-700) 100%) !important;
+      color: var(--acc-on) !important;
+    }
+    body.accent-custom #cam-cta-bar p {
+      color: var(--acc-on) !important;
+      opacity: 0.85;
+    }
+    body.accent-custom .ring-progress {
+      filter: drop-shadow(0 4px 12px var(--acc-soft));
+    }
+    body.accent-white #btn-camera-today {
+      background-color: #0f172a !important;
+      color: #ffffff !important;
+    }
+    body.theme-glass #menu-drawer-panel {
+      background: rgba(255, 255, 255, 0.88) !important;
+    }
+    body.theme-dark-glass #menu-drawer-panel {
+      background: rgba(15, 23, 42, 0.88) !important;
+    }
+    /* ========== NEUMORPHISM (SOFT 3D) THEME ========== */
+    body.theme-neumorph {
+      background: #e6ecf2 !important;
+      color: #1e293b !important;
+    }
+    body.theme-neumorph .bg-white,
+    body.theme-neumorph .hero-glow,
+    body.theme-neumorph header,
+    body.theme-neumorph nav {
+      background: #e6ecf2 !important;
+      border-color: rgba(255, 255, 255, 0.55) !important;
+      box-shadow: 8px 8px 18px #c5ced8, -8px -8px 18px #ffffff !important;
+    }
+    body.theme-neumorph input,
+    body.theme-neumorph select,
+    body.theme-neumorph .bg-slate-50 {
+      background: #e6ecf2 !important;
+      border-color: transparent !important;
+      box-shadow: inset 4px 4px 8px #c8d1db, inset -4px -4px 8px #ffffff !important;
+    }
+    /* ========== CLAYMORPHISM (SOFT 3D PLAY-DOUGH) THEME ========== */
+    body.theme-clay {
+      background: linear-gradient(145deg, #e0f2fe 0%, #dcfce7 50%, #fce7f3 100%) !important;
+      background-attachment: fixed !important;
+      color: #1e293b !important;
+    }
+    body.theme-clay .bg-white,
+    body.theme-clay .hero-glow,
+    body.theme-clay header,
+    body.theme-clay nav {
+      background: rgba(255, 255, 255, 0.92) !important;
+      border: 2px solid rgba(255, 255, 255, 0.96) !important;
+      border-radius: 26px !important;
+      box-shadow:
+        8px 8px 16px #d1d9e6,
+        -8px -8px 16px #ffffff,
+        inset -4px -6px 12px rgba(148, 163, 184, 0.18),
+        inset 5px 5px 12px rgba(255, 255, 255, 0.98) !important;
+    }
+    /* ========== CYBERPUNK / NEON GAMING THEME ========== */
+    body.theme-cyberpunk {
+      background:
+        radial-gradient(circle at 15% 12%, rgba(255, 0, 255, 0.16) 0%, transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(0, 255, 255, 0.16) 0%, transparent 42%),
+        radial-gradient(circle at 50% 90%, rgba(168, 85, 247, 0.14) 0%, transparent 45%),
+        #09090b !important;
+      background-attachment: fixed !important;
+      color: #f4f4f5 !important;
+    }
+    body.theme-cyberpunk .dark\:bg-slate-900,
+    body.theme-cyberpunk .bg-white,
+    body.theme-cyberpunk .hero-glow,
+    body.theme-cyberpunk header,
+    body.theme-cyberpunk nav {
+      background: rgba(12, 12, 18, 0.86) !important;
+      backdrop-filter: blur(24px) !important;
+      -webkit-backdrop-filter: blur(24px) !important;
+      border: 1px solid rgba(34, 211, 238, 0.45) !important;
+      box-shadow: 0 0 12px rgba(255, 0, 255, 0.22), 0 0 22px rgba(0, 255, 255, 0.16) !important;
+    }
+    body.theme-cyberpunk button:active,
+    body.theme-cyberpunk .bg-emerald-600 {
+      box-shadow: 0 0 12px rgba(244, 114, 182, 0.65), 0 0 22px rgba(34, 211, 238, 0.45) !important;
+    }
+    body.theme-cyberpunk .text-emerald-600,
+    body.theme-cyberpunk .dark\:text-emerald-400,
+    body.theme-cyberpunk .dark\:text-emerald-300 {
+      color: #22d3ee !important;
+      text-shadow: 0 0 10px rgba(34, 211, 238, 0.45);
+    }
+    body.theme-cyberpunk #menu-drawer-panel {
+      background: rgba(9, 9, 14, 0.95) !important;
+      border-left: 1px solid rgba(255, 0, 255, 0.45) !important;
+    }
+    /* ========== NATURE / ORGANIC CALM THEME ========== */
+    body.theme-nature {
+      background:
+        radial-gradient(circle at 12% 14%, rgba(74, 222, 128, 0.25) 0%, transparent 42%),
+        radial-gradient(circle at 88% 18%, rgba(125, 211, 252, 0.30) 0%, transparent 44%),
+        radial-gradient(circle at 50% 85%, rgba(253, 230, 138, 0.32) 0%, transparent 48%),
+        linear-gradient(135deg, #e0f2fe 0%, #dcfce7 52%, #fef9c3 100%) !important;
+      background-attachment: fixed !important;
+      color: #14532d !important;
+    }
+    body.theme-nature .bg-white,
+    body.theme-nature .hero-glow,
+    body.theme-nature header,
+    body.theme-nature nav {
+      background: rgba(255, 254, 249, 0.84) !important;
+      backdrop-filter: blur(22px) !important;
+      -webkit-backdrop-filter: blur(22px) !important;
+      border-color: rgba(134, 239, 172, 0.55) !important;
+      box-shadow: 0 10px 28px -8px rgba(20, 83, 45, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+    }
+    body.theme-nature .text-slate-900,
+    body.theme-nature .text-slate-800 {
+      color: #14532d !important;
+    }
+    body.theme-nature .text-slate-500,
+    body.theme-nature .text-slate-600 {
+      color: #166534 !important;
+    }
+    @keyframes bubbleRise {
+      0% { transform: translateY(8px) scale(0.6); opacity: 0; }
+      50% { opacity: 0.85; }
+      100% { transform: translateY(-22px) scale(1.1); opacity: 0; }
+    }
+    .water-bubble { animation: bubbleRise 2.2s ease-in infinite; }
+    .water-bubble-2 { animation: bubbleRise 2.8s ease-in 0.9s infinite; }
+    /* ========== WATER WAVE ANIMATION ========== */
+    @keyframes waterWaveMove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes waterSplashPop {
+      0% { transform: scale(0.85); opacity: 0.95; }
+      60% { transform: scale(1.12); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .water-wave-svg { animation: waterWaveMove 2.6s linear infinite; }
+    .water-wave-svg-back { animation: waterWaveMove 4.2s linear infinite reverse; opacity: 0.55; }
+    .water-pop { animation: waterSplashPop 0.42s ease-out; }
+    button { transition: transform 0.14s ease, background-color 0.16s ease, box-shadow 0.16s ease; }
+    button:active { transform: scale(0.96); }
+    .dark .bg-slate-900 { background-color: #1a1a24 !important; }
+    .dark .text-slate-400 { color: #cbd5e1 !important; }
+    .dark .text-slate-500 { color: #94a3b8 !important; }
+    @keyframes micPulseRing {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
+      70% { transform: scale(1.04); box-shadow: 0 0 0 18px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .mic-listening { animation: micPulseRing 1.3s ease-out infinite; }

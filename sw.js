@@ -1,7 +1,9 @@
-const CACHE_NAME = 'calorie-tracker-pwa-v14';
+const CACHE_NAME = 'calorie-tracker-pwa-v23';
 const CORE_ASSETS = [
   './',
   './index.html',
+  './style.css',
+  './app.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
@@ -10,7 +12,12 @@ const CORE_ASSETS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(CORE_ASSETS)));
-  self.skipWaiting();
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.action === 'skipWaiting') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', (event) => {
